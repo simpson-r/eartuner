@@ -1,40 +1,118 @@
-import { Box, Heading, Stack } from "@chakra-ui/react";
+import React from "react";
+
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Heading,
+  Icon,
+  Link,
+  Spinner,
+  Stack,
+  Text,
+  type StackProps,
+} from "@chakra-ui/react";
+
+import { IconType } from "react-icons/lib";
 
 /**
  * This component renders a pure functional "Card" component that houses widget-like lists within the dashboard
  */
 export const Card = ({
   children,
-  title,
-}: React.PropsWithChildren<{ title: React.ReactNode }>) => {
+  ...props
+}: React.PropsWithChildren<StackProps>) => {
   return (
     <Stack
-      h="100%"
+      p={6}
+      h="full"
       minH="16rem"
-      p={8}
-      rounded="xl"
+      rounded="lg"
       border="1px solid"
-      borderColor="border.emphasized"
+      borderColor="border"
+      {...props}
     >
-      <Heading fontSize="xl">{title}</Heading>
-      <Box w="100%" h="1px" bgColor="border" />
       {children}
     </Stack>
   );
 };
 
-const Placeholder = ({ placeholder }: { placeholder: React.ReactNode }) => {
+const Header = ({ children }: React.PropsWithChildren) => {
   return (
-    <Stack
-      textAlign="center"
-      margin="auto"
-      justifyContent="center"
-      h="100%"
-      w="100%"
-    >
-      {placeholder}
+    <Box position="sticky" top="0" background="bg" h={8}>
+      <Heading fontSize="xl">{children}</Heading>
+      <Box w="100%" h="1px" bgColor="border" />
+    </Box>
+  );
+};
+
+const Content = ({
+  children,
+  ...props
+}: React.PropsWithChildren<StackProps>) => {
+  return (
+    <Stack h="full" w="full" {...props}>
+      {children}
     </Stack>
   );
 };
 
-Card.Placeholder = Placeholder;
+const LoadingState = () => {
+  return (
+    <Center h="full">
+      <Spinner />
+    </Center>
+  );
+};
+
+const EmptyState = ({
+  icon,
+  primaryText,
+  secondaryText,
+  buttonConfig,
+}: {
+  icon?: IconType;
+  primaryText: string;
+  secondaryText?: string;
+  buttonConfig?: {
+    href: string;
+    copy: string;
+  };
+}) => {
+  return (
+    <Container
+      h="full"
+      w="full"
+      margin="auto"
+      justifyContent="center"
+      centerContent
+    >
+      {icon && <Icon as={icon} size="lg" color="fg" />}
+      <Text fontSize="sm">{primaryText}</Text>
+      {secondaryText && (
+        <Text fontSize="xs" color="gray.500">
+          {secondaryText}
+        </Text>
+      )}
+      {buttonConfig && (
+        <Link href={buttonConfig.href} textDecorationLine="none">
+          <Button
+            mt={4}
+            size="sm"
+            rounded="lg"
+            bgColor="cobalt.500"
+            _hover={{ bgColor: "cobalt.600" }}
+          >
+            {buttonConfig.copy}
+          </Button>
+        </Link>
+      )}
+    </Container>
+  );
+};
+
+Card.Header = Header;
+Card.Content = Content;
+Card.EmptyState = EmptyState;
+Card.LoadingState = LoadingState;

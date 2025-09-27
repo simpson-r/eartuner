@@ -1,16 +1,15 @@
 import { signIn } from "next-auth/react";
+
 import { useMutation } from "@tanstack/react-query";
 
-const mutationFn = () =>
-  signIn("email", {
-    email,
-    redirect: false,
-    callbackUrl: "/dashboard",
-  });
 /**
- * This hook ...
+ * This hook makes request that enables logging in a user.
  */
-export const useLogin = () => {
-  const { mutate: login, isSuccess } = useMutation({ mutationFn });
-  return { mutate, isSuccess };
+export const useLogin = (email: string) => {
+  const { mutate, isPending, isSuccess } = useMutation({
+    mutationFn: () =>
+      signIn("email", { email, redirect: false, callbackUrl: "/dashboard" }),
+  });
+
+  return { isPending, isSuccess, login: mutate };
 };

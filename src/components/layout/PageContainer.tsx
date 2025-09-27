@@ -4,12 +4,11 @@ import React from "react";
 
 const PageContainer = (props: StackProps) => (
   <VStack
-    width="100%"
-    maxW="container.lg"
+    w="100%"
     flex="1"
     mx="auto"
     py={10}
-    px={24}
+    px={32}
     {...props}
   />
 );

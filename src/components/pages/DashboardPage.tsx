@@ -1,69 +1,44 @@
 "use client";
 
 import { Session } from "next-auth";
-import { FaArrowRight } from "react-icons/fa";
 
-import {
-  Button,
-  GridItem,
-  Heading,
-  Icon,
-  Link,
-  SimpleGrid,
-  Stack,
-} from "@chakra-ui/react";
-import { Attempt, Exercise } from "@prisma/client";
+import { GridItem, SimpleGrid, Stack, Flex } from "@chakra-ui/react";
 
-import { ActivityList } from "@/components/AttemptList";
+import { ActivityList } from "@/components/ActivityList";
 import PageContainer from "@/components/layout/PageContainer";
 import { ExerciseList } from "@/components/ExerciseList";
 import { StatsList } from "@/components/StatsList";
+import { PageHeader } from "../layout/LayoutUtils";
+
+const cta = {
+  header: "Ready to train?",
+  description:
+    "See your exercises, recent activity, and stats at a glance. Start training anytime to track improvement.",
+};
 
 /**
  * This component renders the home dashboard page for the given user.
  */
-export const DashboardPage = ({
-  user,
-  attempts,
-  exercises,
-}: {
-  user: Session["user"];
-  attempts: Attempt[] | null;
-  exercises: Exercise[] | null;
-}) => {
-  const handleExerciseClick = () => {};
-
+export const DashboardPage = ({}: { user: Session["user"] }) => {
   return (
     <PageContainer>
-      <Stack gap={6} w="100%">
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          justifyContent={{ base: "center", md: "space-between" }}
-          alignItems="center"
-          gap={4}
-        >
-          <Heading fontSize="4xl" fontWeight="bold">
-            Ready to train your ear today?
-          </Heading>
-          <Button size="lg" asChild>
-            <Link href="/exercises">
-              Start training <Icon as={FaArrowRight} size="xs" />
-            </Link>
-          </Button>
-        </Stack>
-        <Heading fontSize="xl">Dashboard overview</Heading>
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
-          <GridItem>
-            <ExerciseList exercises={exercises} onClick={handleExerciseClick} />
-          </GridItem>
-
-          <GridItem>
-            <SimpleGrid rowGap={2} gap={4} h="full">
-              <ActivityList attempts={attempts} />
-              <StatsList />
-            </SimpleGrid>
-          </GridItem>
-        </SimpleGrid>
+      <Stack gap={6} w="full" h="full">
+        {/* page header */}
+        <PageHeader header={cta.header} description={cta.description} />
+        {/* body */}
+        <Flex h="full" direction="column" minH={0} >
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} flex="1" minH="0">
+            <GridItem h="full" minH={0}>
+              <ExerciseList />
+            </GridItem>
+            <GridItem h="full" minH={0}>
+              <SimpleGrid rowGap={2} gap={4}>
+                <ActivityList />
+                <StatsList />
+              </SimpleGrid>
+            </GridItem>
+          </SimpleGrid>
+        </Flex>
       </Stack>
     </PageContainer>
   );

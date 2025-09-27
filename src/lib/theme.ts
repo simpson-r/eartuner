@@ -1,41 +1,69 @@
 "use client";
 
-import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
-import { Outfit, Manrope } from "next/font/google";
+import {
+  createSystem,
+  defaultConfig,
+  defineConfig,
+  defineRecipe,
+} from "@chakra-ui/react";
+import { Inter, Manrope } from "next/font/google";
 
 /**
  * Fonts
  */
 export const manrope = Manrope({ subsets: ["latin"], display: "swap" });
-export const geistMono = Outfit({
+export const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  weight: "400",
 });
 
 /**
  * Custom theme
  */
+export const buttonRecipe = defineRecipe({
+  variants: {
+    size: {
+      sm: { padding: "2", fontSize: "md", fontWeight: "bold" },
+      md: { padding: "2", fontSize: "md", fontWeight: "bold" },
+      lg: { padding: "4", fontSize: "md", fontWeight: "bold" },
+    },
+  },
+});
+
 export const theme = defineConfig({
+  globalCss: {
+    h1: { color: "fg" },
+    h2: { color: "fg" },
+    body: { color: "fg.muted", fontWeight: "normal" },
+  },
   theme: {
     recipes: {
-      Button: {
-        defaultVariants: {
-          colorPalette: "green", // sets default color palette
+      Button: buttonRecipe,
+      Heading: {
+        base: {
+          color: "fg.info",
+        },
+      },
+      Link: {
+        base: {
+          textDecorationLine: "none",
         },
       },
     },
 
     tokens: {
       colors: {
-        background: {
-          DEFAULT: { value: "#ffedd5" },
+        cobalt: {
+          50: { value: "#eff6ff" },
+          500: { value: "#2563eb" },
+          600: { value: "#1d4ed8" },
         },
       },
+
       fonts: {
-        heading: { value: manrope.style.fontFamily },
-        body: { value: geistMono.style.fontFamily },
-        mono: { value: manrope.style.fontFamily },
+        heading: { value: inter.style.fontFamily },
+        body: { value: inter.style.fontFamily },
+        mono: { value: inter.style.fontFamily },
       },
     },
   },

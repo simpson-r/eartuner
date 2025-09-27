@@ -7,7 +7,7 @@ interface Props {
   icon: React.ReactElement;
   boxSize?: number;
   showButton?: boolean;
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
 }
 
 /**
@@ -31,7 +31,7 @@ export const Block = ({
       transition="0.2s"
     >
       {/* heading + description */}
-      <Stack alignItems="flex-start">
+      <Stack align="start">
         <HStack>
           {icon}
           <Heading fontSize="xl">{label}</Heading>
@@ -41,13 +41,14 @@ export const Block = ({
         </Text>
       </Stack>
 
-      {/* play button */}
+      {/* optional play button */}
       {showButton && (
-        <Stack justifyContent="center" align="center">
+        <Stack justify="center" align="center">
           <Button
-            variant="outline"
-            justifyContent="flex-start"
             w="1/2.5"
+            size="sm"
+            rounded="md"
+            variant="outline"
             onClick={onClick}
           >
             Create {label.toLowerCase()} exercise

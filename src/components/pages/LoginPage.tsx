@@ -1,7 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-
 import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { MdCheckCircleOutline } from "react-icons/md";
@@ -9,111 +7,106 @@ import { MdCheckCircleOutline } from "react-icons/md";
 import {
   Box,
   Button,
+  Container,
   Field,
-  Heading,
+  Flex,
   Icon,
   Input,
   Link,
   Stack,
-  Text,
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
 
 import { getEmailProvider } from "@/lib/emails";
+import { useLogin } from "@/hooks/use-login";
+import { PageHeader } from "../layout/LayoutUtils";
 
+const loggedOutCta = {
+  header: "Sign in to EarTrainer+",
+  description: "Use your email address to sign in",
+};
+
+/**
+ * This component renders a login page that displays an auth form.
+ */
 export const LoginPage = () => {
+  return (
+    <Container maxW="lg" justifyContent="center" centerContent>
+      <AuthForm />
+    </Container>
+  );
+};
+
+const AuthForm = () => {
   const [email, setEmail] = useState("");
+  const { isPending, isSuccess, login } = useLogin(email);
 
-  const {
-    mutate: login,
-    isPending,
-    isSuccess,
-  } = useMutation({
-    mutationFn: () =>
-      signIn("email", { email, redirect: false, callbackUrl: "/" }),
-  });
-
-  const renderAuthForm = () => {
-    if (isSuccess) {
-      const { name, url } = getEmailProvider(email);
-      return (
-        <Stack textAlign="center" align="center" h="1/3">
-          <Heading alignItems="center">
-            Check your email <Icon as={MdCheckCircleOutline} />
-          </Heading>
-          <Text maxW="30rem" fontSize="xl">
-            A <b>sign in link</b> has been sent to your email address.
-            <br />
-            {name && url && (
-              <>
-                Check{" "}
-                <Link textDecoration="underline" href={url}>
-                  your {name} inbox
-                </Link>
-                .
-              </>
-            )}
-          </Text>
-        </Stack>
-      );
-    }
-
-    return (
-      <Stack h="2/3" gap={4}>
-        <Stack textAlign="center" align="center">
-          <Text fontWeight="bold" as="h2" fontSize="4xl">
-            Sign in to EarTrainer+
-          </Text>
-          <Text fontSize="lg">Use your email address to sign in</Text>
-        </Stack>
-        <Box
-          rounded="lg"
-          bg="white"
-          border="1px solid"
-          borderColor="border"
-          p={8}
-          w="100%"
-        >
-          <Stack
-            as="form"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              email && login();
-            }}
-            gap={4}
-          >
-            <Field.Root id="email">
-              <Field.Label>Email address</Field.Label>
-              <Input
-                required
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-                placeholder="me@gmail.com"
-                type="email"
-              />
-            </Field.Root>
-
-            <Stack gap={10}>
-              <Button loading={isPending} type="submit">
-                Send magic link
-                <FaPaperPlane />
-              </Button>
-            </Stack>
-          </Stack>
-        </Box>
-      </Stack>
-    );
+  const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (email) login();
   };
 
+  if (isSuccess) {
+    const { name, url } = getEmailProvider(email);
+    const header = (
+      <Flex align="center" gap={2}>
+        Check your email <Icon as={MdCheckCircleOutline} color="green.solid" />
+      </Flex>
+    );
+    const description = (
+      <Container direction="column" centerContent>
+        <Box>
+          A <b>sign-in link</b> has been sent to your email address.
+        </Box>
+        {name && url && (
+          <Box>
+            Check{" "}
+            <Link href={url} variant="underline" fontWeight="bold">
+              your {name} inbox
+            </Link>
+            .
+          </Box>
+        )}
+      </Container>
+    );
+
+    return (
+      <PageHeader header={header} description={description} align="center" />
+    );
+  }
+
   return (
-    <Stack
-      textAlign="center"
-      justify="center"
-      maxW="md"
-      margin="auto"
-      h="calc(100vh - 64px)"
-    >
-      {renderAuthForm()}
+    <Stack w="full" gap={4}>
+      <PageHeader
+        header={loggedOutCta.header}
+        description={loggedOutCta.description}
+        align="center"
+      />
+      <Box p={8} w="full" border="1px solid" borderColor="border" rounded="md">
+        <Stack as="form" onSubmit={handleSubmit} gap={4}>
+          <Field.Root id="email">
+            <Field.Label>Email address</Field.Label>
+            <Input
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              placeholder="alice@gmail.com"
+              type="email"
+              required
+            />
+          </Field.Root>
+
+          <Button
+            size="sm"
+            type="submit"
+            loading={isPending}
+            bgColor={email ? "green.solid" : "gray.solid"}
+            disabled={!email}
+          >
+            <Flex gap={10}>
+              Send magic link <FaPaperPlane />
+            </Flex>
+          </Button>
+        </Stack>
+      </Box>
     </Stack>
   );
 };

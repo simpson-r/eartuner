@@ -1,22 +1,20 @@
-"use client";
-
-import { HiOutlineChartBar } from "react-icons/hi";
-
 import { Card } from "./Card";
+import { HiOutlineClock } from "react-icons/hi";
 
 const emptyStateCta = {
   primary: "See your progress grow",
   secondary: "Track accuracy, streaks, and progress over time.",
 };
 /**
- * This component renders a list of stats to be displayed on the user's dashboard
+ * This component renders a home page block with a "Create Exercise" button
+ * that opens the flow for creating a new exercise.
  */
-export const StatsList = () => {
+export const ActivityList = () => {
   return (
     <Card>
-      <Card.Header>Stats</Card.Header>
+      <Card.Header>Recent activity</Card.Header>
       <Card.EmptyState
-        icon={HiOutlineChartBar}
+        icon={HiOutlineClock}
         primaryText={emptyStateCta.primary}
         secondaryText={emptyStateCta.secondary}
       />

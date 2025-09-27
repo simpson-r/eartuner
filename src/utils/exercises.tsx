@@ -1,6 +1,7 @@
 import { FaMusic, FaWaveSquare, FaRandom, FaGuitar } from "react-icons/fa";
 
-import { ListCollection } from "@chakra-ui/react";
+import { ExerciseType } from "@prisma/client";
+
 import {
   chordTypes,
   intervalTypes,
@@ -10,7 +11,8 @@ import {
   scaleDirection,
   scaleDegreeTypes,
 } from "@/utils/exercise-collections";
-import { Exercise } from "@/lib/types";
+import { CollectionConfig } from "@/utils/types";
+
 import React from "react";
 
 /**
@@ -18,7 +20,7 @@ import React from "react";
  */
 type Exercises = {
   title: string;
-  type: Exercise;
+  type: ExerciseType;
   icon: React.ReactElement;
   description: string;
 };
@@ -26,25 +28,25 @@ type Exercises = {
 export const exercises: Exercises[] = [
   {
     title: "Intervals",
-    type: "intervals",
+    type: ExerciseType.Interval,
     icon: <FaWaveSquare />,
     description: "Identify the distance between two notes.",
   },
   {
     title: "Chords",
-    type: "chords",
+    type: ExerciseType.Chord,
     icon: <FaMusic />,
     description: "Identify the type of chord you hear.",
   },
   {
     title: "Scales",
-    type: "scales",
+    type: ExerciseType.Scale,
     icon: <FaGuitar />,
     description: "Recognize the scale being played.",
   },
   {
     title: "Scale degrees",
-    type: "scaleDegrees",
+    type: ExerciseType.ScaleDegree,
     icon: <FaRandom />,
     description: "Practice with a mix of all exercise types.",
   },
@@ -53,66 +55,107 @@ export const exercises: Exercises[] = [
 /**
  * Exercise modal configs
  */
-type CollectionConfig = {
-  label: string;
-  list: ListCollection;
-  placeholder?: string;
-};
 type ExerciseConfig = {
-  collection: CollectionConfig;
-  subCollection?: CollectionConfig;
-  showFixedRoot: boolean;
-  showAutoProceed: boolean;
+  showFixedRoot?: boolean;
+  showAutoProceed?: boolean;
+  showHarmonicToggle?: boolean;
+  primary: CollectionConfig;
+  secondary?: CollectionConfig;
+  tertiary?: CollectionConfig;
 };
 
-export const exerciseConfigurations: Record<Exercise, ExerciseConfig> = {
-  chords: {
-    collection: {
-      label: "Chords",
-      list: chordTypes,
-      placeholder: "Select chord type",
-    },
-    subCollection: {
-      label: "Inversions",
-      list: chordInversions,
-    },
-    showFixedRoot: true,
-    showAutoProceed: true,
-  },
-  intervals: {
-    collection: {
+export const exerciseConfigs: Record<ExerciseType, ExerciseConfig> = {
+  Interval: {
+    primary: {
+      key: "intervals",
+      control: "select",
       label: "Intervals",
       list: intervalTypes,
-      placeholder: "Select interval type",
+      default: "simple",
+      selection: { multi: true, min: 1 },
+      help: "Choose one or more intervals to practice.",
     },
-    subCollection: {
-      label: "Interval type",
-      list: intervalDirection,
-      placeholder: "Select interval direction",
-    },
-    showFixedRoot: true,
-    showAutoProceed: true,
-  },
-  scales: {
-    collection: {
-      label: "Scales",
-      list: scaleTypes,
-      placeholder: "Select scale type",
-    },
-    subCollection: {
+    secondary: {
+      key: "direction",
       label: "Direction",
-      list: scaleDirection,
-      placeholder: "Select scale direction",
+      control: "select",
+      list: intervalDirection,
+      default: "asc",
+      selection: { multi: false, min: 1, max: 1 },
     },
+
     showFixedRoot: true,
     showAutoProceed: true,
   },
-  scaleDegrees: {
-    collection: {
-      label: "Scale degrees",
-      list: scaleDegreeTypes,
-      placeholder: "Select scale degree",
+
+  Chord: {
+    primary: {
+      key: "chords",
+      label: "Chord Types",
+      control: "select",
+      list: chordTypes,
+      default: "triads",
+      selection: { multi: true, min: 1 },
     },
+    secondary: {
+      key: "inversions",
+      label: "Inversions",
+      control: "checkbox",
+      list: chordInversions,
+      default: "root",
+      selection: { multi: true, min: 1 },
+    },
+
+    showFixedRoot: true,
+    showAutoProceed: true,
+    showHarmonicToggle: true,
+  },
+
+  Scale: {
+    primary: {
+      label: "Scale Types",
+      key: "scales",
+      control: "select",
+      list: scaleTypes,
+      placeholder: "Select scale types",
+      default: "major-minor",
+      selection: { multi: true, min: 1 },
+    },
+    secondary: {
+      key: "scaleDirection",
+      label: "Direction",
+      control: "select",
+      list: scaleDirection,
+      default: "asc",
+      selection: { multi: false, min: 1, max: 1 },
+    },
+
+    showFixedRoot: true,
+    showAutoProceed: true,
+  },
+
+  ScaleDegree: {
+    primary: {
+      label: "Degrees",
+      key: "degrees",
+      control: "select",
+      list: scaleDegreeTypes,
+      default: "simple",
+      selection: { multi: true, min: 1 },
+      help: "Choose the scale degrees you want to identify by ear.",
+    },
+    // secondary: {
+    //   key: "context",
+    //   label: "Key Context",
+    //   control: "radio",
+    //   // list: [
+    //   //   { value: "major", label: "Major" },
+    //   //   { value: "minor", label: "Minor" },
+    //   // ],
+    //   defaults: ["major"],
+    //   selection: { multi: false, min: 1, max: 1 },
+    // },
+
     showFixedRoot: true,
     showAutoProceed: true,
   },

@@ -7,13 +7,22 @@ export const Dropdown = ({
   collection,
   label,
   placeholder,
+  value,
+  onValueChange,
 }: {
   collection: ListCollection;
   label: string;
-  placeholder: string;
+  placeholder?: string;
+  value: string;
+  onValueChange: (val: string) => void;
 }) => {
   return (
-    <Select.Root collection={collection} size="sm">
+    <Select.Root
+      size="sm"
+      collection={collection}
+      value={[value]}
+      onValueChange={(e) => onValueChange(e.value[0])}
+    >
       <Select.HiddenSelect />
       <Select.Label>{label}</Select.Label>
       <Select.Control>

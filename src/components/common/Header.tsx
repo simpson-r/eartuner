@@ -2,29 +2,60 @@
 
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import React from "react";
-import { HiLogout } from "react-icons/hi";
+import { FaCircle } from "react-icons/fa";
+import { HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
 
-import { Button, HStack, Heading, IconButton, Link } from "@chakra-ui/react";
-import { Tooltip } from "@/components/ui/tooltip";
+import {
+  Button,
+  createListCollection,
+  HStack,
+  Heading,
+  IconButton,
+  Link,
+  useDisclosure,
+} from "@chakra-ui/react";
 
+import { Menu } from "@/components/ui/menu";
+
+const PROFILE_MENU_ITEMS = createListCollection({
+  items: [
+    { label: "Settings", value: "settings", icon: HiOutlineCog },
+    { label: "Sign out", value: "logout", icon: HiOutlineLogout },
+  ],
+});
 /**
  * This component renders the global navigation bar for both logged-out/logged in users.
  */
 export const Header = ({ session }: { session: Session | null }) => {
+  const pathname = usePathname();
+  const { open: isOpen, onClose, onOpen } = useDisclosure();
+
+  const handleMenuSelect = (value: string) => {
+    switch (value) {
+      case "logout":
+        signOut({ callbackUrl: "/" });
+        break;
+    }
+    onClose();
+  };
+
   return (
     <HStack
       w="100%"
       justifyContent="space-between"
-      alignItems="center"
+      align="center"
       borderBottom="1px solid"
       borderColor="border"
-      minH={16}
+      minH={20}
       px={6}
     >
       {/* left-aligned nav */}
-      <Heading size="sm">
-        <Link href="/dashboard">EarTrainer+</Link>
+      <Heading size="lg">
+        <Link href="/dashboard" textDecorationLine="none">
+          EarTrainer+
+        </Link>
       </Heading>
       {/* right-aligned nav */}
       <HStack gap={1}>
@@ -32,31 +63,43 @@ export const Header = ({ session }: { session: Session | null }) => {
           <>
             {/* "exercises" button */}
             <Button size="sm" variant="ghost" asChild>
-              <Link href="/exercises"> Exercises</Link>
+              <Link href="/exercises" textDecorationLine="none">
+                Exercises
+              </Link>
             </Button>
-            {/* "profile" button */}
-            <Tooltip showArrow content="Your profile">
-              <Button colorScheme="beige" variant="ghost" size="sm" asChild>
-                <Link href={`/profile/${session.userId}`}>Profile</Link>
-                Profile
-              </Button>
-            </Tooltip>
-            {/* "logout" button */}
-            <Tooltip showArrow content="Logout">
+            {/* "profile" button, menu trigger */}
+            <Menu
+              isOpen={isOpen}
+              items={PROFILE_MENU_ITEMS}
+              onPointerDownOutside={onClose}
+              onSelect={handleMenuSelect}
+            >
               <IconButton
-                aria-label="logout"
-                size="sm"
+                aria-label="profile"
+                boxSize={8}
+                color="orange.500"
                 variant="ghost"
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={onOpen}
+                asChild
               >
-                <HiLogout />
+                <FaCircle />
               </IconButton>
-            </Tooltip>
+            </Menu>
           </>
         ) : (
-          <Button size="sm" asChild>
-            <Link href="/login"> Login</Link>
-          </Button>
+          pathname !== "/login" && (
+            <Button
+              bgColor="cobalt.500"
+              _hover={{ bgColor: "cobalt.600" }}
+              rounded="md"
+              size="sm"
+              asChild
+            >
+              <Link href="/login" textDecorationLine="none">
+                Login
+              </Link>
+            </Button>
+          )
         )}
       </HStack>
     </HStack>
