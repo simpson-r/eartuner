@@ -1,21 +1,14 @@
 import type { Metadata } from 'next';
 
-import { Layout } from '@/components/layout/Layout';
-import { getCurrentSessionRedirect } from '@/lib/sessions';
+import { Layout, LayoutProps } from '@/components/Layout';
+import { getCurrentSessionRedirect } from '@/auth/sessions';
 
 export const metadata: Metadata = {
-  title: 'Ear Trainer',
+  title: 'EarTuner',
   description: 'Create personalized training exercises',
 };
 
-/**
- * This component renders the layout for the root layout for the webapp
- */
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function AuthLayout({ children }: LayoutProps) {
   const session = await getCurrentSessionRedirect();
 
   return <Layout session={session}>{children}</Layout>;

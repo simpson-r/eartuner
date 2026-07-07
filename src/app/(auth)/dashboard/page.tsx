@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { getCurrentSessionRedirect } from '@/lib/sessions';
+import { getCurrentSessionRedirect } from '@/auth/sessions';
 import { DashboardPage } from '@/views/DashboardPage';
 import { notFound } from 'next/navigation';
 

@@ -25,7 +25,7 @@ import {
   PlaybackMode,
   ExerciseConfig,
   ExerciseFormState,
-} from '@/utils/types';
+} from '@/features/exercise/types';
 
 function getOptionSet(
   options: Record<string, string[]>,
@@ -156,8 +156,8 @@ export const ExerciseForm = ({
           type="submit"
           form="exercise-config-form"
           w="11/12"
-          surfaceColor="purple.400"
-          shadowColor="purple.500"
+          surfaceColor="cobalt.500"
+          shadowColor="cobalt.600"
           showShimmer
         >
           Start exercise

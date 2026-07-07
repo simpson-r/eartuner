@@ -1,11 +1,37 @@
 'use client';
 
+import { randomItem } from '@/utils/utils';
+
+const SUCCESS_HEADINGS = [
+  'Awesome!',
+  'Nice!',
+  'Great job!',
+  'Excellent!',
+  'Correct!',
+  'Well done!',
+];
+
+const SUCCESS_MESSAGES = [
+  'Keep up the good work.',
+  'Your ear is getting stronger.',
+  'Great listening.',
+  'You nailed that one.',
+  'One step closer to mastery.',
+];
+
+const FAILURE_HEADINGS = ['Almost', 'Incorrect'];
+
+/**
+ * Returns a feedback message based on the user's score.
+ *
+ * @param score - Percentage score (0–100).
+ */
 export const getPerformanceCTA = (score: number) => {
   switch (true) {
     case score === 100:
-      return 'Perfect! Your ear is dialed in.';
+      return "Perfect! You're locked in.";
     case score >= 80:
-      return 'Excellent! Your ear is dialed in.';
+      return "Excellent! You're developing a great ear.";
     case score >= 60:
       return 'Nice work! Your ear is improving.';
     default:
@@ -13,11 +39,22 @@ export const getPerformanceCTA = (score: number) => {
   }
 };
 
+/**
+ * Returns the heading and description shown after answering a question.
+ *
+ * Displays encouragement for correct answers or reveals the correct
+ * answer when the user is incorrect.
+ *
+ * @param correct - Whether the user's answer was correct.
+ * @param answer - The correct answer to display when incorrect.
+ */
 export const getAnswerFeedback = (correct: boolean, answer: string) => {
   return {
-    heading: correct ? 'Awesome!' : 'Incorrect',
+    heading: correct
+      ? randomItem(SUCCESS_HEADINGS)
+      : randomItem(FAILURE_HEADINGS),
     description: correct ? (
-      'Keep up the good work'
+      randomItem(SUCCESS_MESSAGES)
     ) : (
       <>
         Not quite — the correct answer is <b>{answer}</b>
@@ -26,7 +63,16 @@ export const getAnswerFeedback = (correct: boolean, answer: string) => {
   };
 };
 
-export const timeFormat = (sec: number) => {
+/**
+ * Formats a duration in seconds as HH:MM:SS or MM:SS.
+ *
+ * Examples:
+ *  - 65    -> 01:05
+ *  - 3661  -> 01:01:01
+ *
+ * @param sec - Duration in seconds.
+ */
+export const formatDuration = (sec: number | null) => {
   if (sec === null) return '--';
   const hStart = 11;
   const mStart = 14;

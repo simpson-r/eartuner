@@ -2,9 +2,8 @@
 
 import { VStack } from '@chakra-ui/react';
 
-
 import { ExerciseWidget } from '@/features/dashboard/components/ExerciseWidget';
-import { Layout } from '@/components/layout/Layout';
+import { Layout } from '@/components/Layout';
 
 const cta = {
   header: 'Choose an exercise to start practicing',
@@ -23,6 +22,7 @@ export const HomePage = () => {
           description={cta.description}
           align="center"
           justifyContent={{ base: 'center' }}
+          textAlign="center"
         />
 
         {/* exercise types */}

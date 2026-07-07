@@ -3,6 +3,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
   Separator,
   Stack,
   Text,
@@ -10,15 +11,17 @@ import {
 
 import SparkIcon from '@/assets/spark.svg?component';
 import TrophyIcon from '@/assets/trophy.svg?component';
-import { getPerformanceCTA, timeFormat } from '../utils';
+import { getPerformanceCTA, formatDuration } from '../utils';
 import { Stat } from '@/components/Stat';
 import { Fragment, useMemo } from 'react';
 import { ElevatedButton } from '@/components/ElevatedButton';
 import { ExercisePlayerState } from '../hooks/use-exercise-player';
 import { useRouter } from 'next/navigation';
 
-const ICON_SIZE = 80;
-const MAIN_ICON_SIZE = 240;
+const ICON_SIZE = 20;
+const ICON_SIZE_SM = 10;
+const HERO_ICON_SIZE = 240;
+const HERO_ICON_SIZE_SM = 180;
 
 /**
  * This renders the post-exercise summary once the user finishes a training session.
@@ -31,6 +34,7 @@ export const CompletionScreen = ({
   isLoggedIn: boolean;
 }) => {
   const router = useRouter();
+
   const score = ((state.correct * 1.0) / state.total) * 100;
   const cta = getPerformanceCTA(score);
 
@@ -39,13 +43,13 @@ export const CompletionScreen = ({
     return [
       { label: 'Score', value: `${roundedScore}%` },
       { label: 'Questions', value: state.total },
-      { label: 'Time', value: timeFormat(state.duration || 0) },
+      { label: 'Time', value: formatDuration(state.duration || 0) },
     ];
   }, [score, state]);
 
-  const firework = (
+  const celebrationEffect = (
     <Box animation="shake 1s ease-in-out infinite">
-      <SparkIcon width={ICON_SIZE} height={ICON_SIZE} />
+      <Icon as={SparkIcon} boxSize={{ base: ICON_SIZE_SM, md: ICON_SIZE }} />
     </Box>
   );
 
@@ -53,14 +57,17 @@ export const CompletionScreen = ({
   const handleContinueClick = () => router.replace('/');
 
   return (
-    <Flex direction="column" align="center" justify="center" gap={4} py={6}>
+    <Flex direction="column" align="center" justify="center" gap={6} py={6}>
       {/* hero svg */}
       <Stack direction="row" align="center" gap={8}>
-        {firework}
+        {celebrationEffect}
         <Box animation="scaleUp 500ms cubic-bezier(0.34, 1.56, 0.64, 1)">
-          <TrophyIcon width={MAIN_ICON_SIZE} height={MAIN_ICON_SIZE} />
+          <Icon
+            as={TrophyIcon}
+            boxSize={{ base: HERO_ICON_SIZE_SM, md: HERO_ICON_SIZE }}
+          />
         </Box>
-        {firework}
+        {celebrationEffect}
       </Stack>
 
       {/* success message */}
@@ -95,7 +102,7 @@ export const CompletionScreen = ({
         ))}
       </HStack>
 
-      {/* sign up cta */}
+      {/* logged-out sign up cta */}
       {!isLoggedIn && (
         <Stack
           direction={{ base: 'column', md: 'row' }}
@@ -113,9 +120,9 @@ export const CompletionScreen = ({
           <ElevatedButton
             size="lg"
             rounded="2xl"
-            surfaceColor="purple.400"
-            shadowColor="purple.500"
-            color="fg.inverted"
+            surfaceColor="cobalt.500"
+            shadowColor="cobalt.600"
+            color="white"
             onClick={handleLoginClick}
           >
             Create account

@@ -15,9 +15,9 @@
     "@emotion/react": "^11.14.0",
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "^6.16.2",
-    "@prisma/extension-accelerate": "^2.0.2",
     "@tanstack/react-query": "^5.90.2",
     "axios": "^1.12.2",
+    "motion": "^12.42.2",
     "next": "^16.2.10",
     "next-auth": "^5.0.0-beta.31",
     "next-themes": "^0.4.6",
@@ -27,6 +27,7 @@
     "react-icons": "^5.5.0",
     "react-is": "^19.2.7",
     "recharts": "^3.9.1",
+    "resend": "^6.17.1",
     "swr": "^2.3.3",
     "tone": "^15.3.4",
     "zod": "^4.4.3"

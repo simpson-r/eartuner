@@ -1,5 +1,6 @@
-import { Button, ButtonProps, defaultSystem } from '@chakra-ui/react';
+import { Button, ButtonProps } from '@chakra-ui/react';
 import { BUTTON_SHIMMER_SX } from './style';
+import { system } from '@/theme';
 
 interface PressButtonProps extends ButtonProps {
   icon?: React.ReactElement;
@@ -19,7 +20,7 @@ export const ElevatedButton = ({
   const { disabled } = props;
   const iconOnly = !children;
 
-  const shadow = defaultSystem.token.var(`colors.${shadowColor}`); // get token var for shadow tokens
+  const shadow = system.token.var(`colors.${shadowColor}`); // get token var for shadow tokens
 
   return (
     <Button

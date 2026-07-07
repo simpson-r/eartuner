@@ -8,8 +8,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { PreferencesProvider } from '@/context/PreferencesContext';
-import { ColorModeProvider } from '@/lib/color-mode';
-import { system } from '@/lib/theme';
+import { ColorModeProvider } from '@/theme/color-mode';
+import { system } from '@/theme';
 
 
 export function Providers({

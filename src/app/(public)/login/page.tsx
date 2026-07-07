@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { getCurrentUser } from '@/lib/sessions';
+import { getCurrentUser } from '@/auth/sessions';
 import { LoginPage } from '@/views/LoginPage';
 
 const Login = async () => {

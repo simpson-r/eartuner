@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { ExerciseCreateRequest } from '@/utils/types';
+import { ExerciseCreateRequest } from '@/features/exercise/types';
 
 /**
  * Hook to manage creating execution attempts for a specific exercise type

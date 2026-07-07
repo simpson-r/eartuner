@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FaPlay } from 'react-icons/fa';
 
 import {
   Flex,
@@ -8,25 +9,31 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { FaPlay } from 'react-icons/fa';
+import { ExerciseType } from '@prisma/client';
 
 import { ElevatedButton } from '@/components/ElevatedButton';
-import { Question } from '@/utils/types';
-import { responseSx } from '../style';
+import { responseSx } from '@/features/exercise/style';
+import { Question } from '@/features/exercise/types';
+
+import { EXERCISE_NAME_MAP } from '@/utils/constants';
+
+const ICON_BOX_SIZE = 20;
 
 export const PlayerScreen = ({
+  exerciseType,
   answered,
   correct,
   options,
-  playing,
+  enablePlayButton,
   question,
   handlePlayClick,
   handleResponseClick,
 }: {
+  exerciseType: ExerciseType;
   answered: boolean;
   correct: boolean;
   options: { label: string; value: string }[];
-  playing: boolean;
+  enablePlayButton: boolean;
   question?: Question;
   handlePlayClick: VoidFunction;
   handleResponseClick: (response: string) => void;
@@ -49,7 +56,7 @@ export const PlayerScreen = ({
         h="5/6"
       >
         <Heading size="2xl" textAlign="left">
-          What do you hear?
+          {`Which ${EXERCISE_NAME_MAP[exerciseType]} do you hear?`}
         </Heading>
 
         <Stack
@@ -61,18 +68,17 @@ export const PlayerScreen = ({
           <VStack gap={6}>
             <ElevatedButton
               aria-label="Play interval"
-              icon={<Icon as={FaPlay} boxSize={20} />}
-              disabled={playing}
+              icon={<Icon as={FaPlay} boxSize={ICON_BOX_SIZE} />}
+              disabled={!enablePlayButton}
               onClick={handlePlayClick}
-              boxSize="180px"
-              surfaceColor="cyan.focusRing"
-              shadowColor="cyan.solid"
+              boxSize={{ base: '160px', md: '180px' }}
+              surfaceColor="cobalt.500"
+              shadowColor="cobalt.600"
               rounded="4xl"
             />
-            {/* <Text fontSize="sm">Click to play</Text> */}
           </VStack>
 
-          {/* answer options */}
+          {/* answer options grid */}
           <SimpleGrid
             templateColumns={{
               base: 'repeat(2, 1fr)',

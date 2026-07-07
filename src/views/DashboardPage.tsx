@@ -5,7 +5,7 @@ import { SimpleGrid, Stack } from '@chakra-ui/react';
 import { ActivityWidget } from '@/features/dashboard/components/ActivityWidget';
 import { ExerciseWidget } from '@/features/dashboard/components/ExerciseWidget';
 import { StatsWidget } from '@/features/dashboard/components/StatsWidget';
-import { Layout } from '@/components/layout/Layout';
+import { Layout } from '@/components/Layout';
 
 const pageCTA = {
   header: 'Dashboard',

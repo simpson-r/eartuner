@@ -1,19 +1,11 @@
 import type { Metadata } from 'next';
 
-import { PlayerLayout } from '@/components/layout/Layout';
+import { PlayerLayout, LayoutProps } from '@/components/Layout';
 
 export const metadata: Metadata = {
-  title: 'Ear Trainer',
-  description: 'Create personalized training exercises',
+  title: 'Exercise - EarTuner',
+  description: 'Practice a custom ear training exercise.',
 };
-
-/**
- * This component renders the layout for the root layout for the webapp
- */
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function ExerciseLayout({ children }: LayoutProps) {
   return <PlayerLayout>{children}</PlayerLayout>;
 }

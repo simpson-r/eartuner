@@ -2,12 +2,14 @@ import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { toaster } from '@/components/ui/toaster';
-import { ClientPreferences } from '@/utils/types';
+import { ClientPreferences } from '@/features/exercise/types';
+import { useSession } from 'next-auth/react';
 
 /**
  * Hook to manage fetching and updating the authenticated user's preferences
  */
 export const usePreferences = () => {
+  const { status } = useSession();
   const queryClient = useQueryClient();
   // GET - fetch preference data for authenticated user
   const {
@@ -17,6 +19,7 @@ export const usePreferences = () => {
   } = useQuery({
     queryKey: ['preferences'],
     queryFn: () => axios.get(`/api/me/preferences`).then((res) => res.data),
+    enabled: status === 'authenticated',
   });
 
   // PATCH - Update user preferences

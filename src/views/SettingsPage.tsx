@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { Instrument } from '@prisma/client';
 
-import { Layout } from '@/components/layout/Layout';
+import { Layout } from '@/components/Layout';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { toaster } from '@/components/ui/toaster';
 import { useHistory } from '@/hooks/use-history';
@@ -26,7 +26,7 @@ import {
   Section,
 } from '@/views/SettingsPage.style';
 
-import { ClientPreferences } from '@/utils/types';
+import { ClientPreferences } from '@/features/exercise/types';
 import { usePreferencesContext } from '@/context/PreferencesContext';
 import { signOut } from 'next-auth/react';
 

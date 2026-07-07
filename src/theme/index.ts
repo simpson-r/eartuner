@@ -6,12 +6,16 @@ import {
   defineConfig,
   defineRecipe,
 } from '@chakra-ui/react';
-import { Inter, Manrope } from 'next/font/google';
+import { Inter, Space_Grotesk } from 'next/font/google';
 
 /**
  * FONTS
  */
-export const manrope = Manrope({ subsets: ['latin'], display: 'swap' });
+export const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: '700',
+});
 export const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
 /**
@@ -86,13 +90,9 @@ export const theme = defineConfig({
           500: { value: '#2563eb' },
           600: { value: '#1d4ed8' },
         },
-        pear: {
-          500: { value: '#D8E82E' },
-          600: { value: '#BBCC00' },
-        },
       },
       fonts: {
-        heading: { value: inter.style.fontFamily },
+        heading: { value: spaceGrotesk.style.fontFamily },
         body: { value: inter.style.fontFamily },
         mono: { value: inter.style.fontFamily },
       },

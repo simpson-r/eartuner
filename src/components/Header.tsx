@@ -3,7 +3,6 @@
 import { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
 import { HiOutlineCog, HiOutlineLogout, HiOutlineMenu } from 'react-icons/hi';
 
 import {
@@ -18,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 
 import { Menu } from '@/components/ui/menu';
-import { ColorModeIcon, useColorMode } from '@/lib/color-mode';
+import { ColorModeIcon, useColorMode } from '@/theme/color-mode';
 
 const PROFILE_MENU_ITEMS = createListCollection({
   items: [
@@ -77,11 +76,11 @@ export const Header = ({ session }: { session: Session | null }) => {
     >
       {/* left-aligned nav */}
       <HStack gap={8} align="baseline">
-        <Link href="/" textDecorationLine="none" asChild>
-          <Heading size="2xl" color="fg">
+        <Heading size="3xl" color="fg" asChild>
+          <Link href="/" textDecorationLine="none">
             EarTuner
-          </Heading>
-        </Link>
+          </Link>
+        </Heading>
 
         {session?.user.id && pathname !== '/dashboard' && (
           <Link

@@ -8,7 +8,7 @@ import { Card } from '@/components/Card';
 import { BreakdownByType, StatsResponse, useStats } from '@/hooks/use-stats';
 import { HStack, Separator, Text, VStack } from '@chakra-ui/react';
 import { Stat } from '@/components/Stat';
-import { timeFormat } from '@/features/exercise/utils';
+import { formatDuration } from '@/features/exercise/utils';
 import { Fragment } from 'react';
 import {  EXERCISE_LABEL_CONFIG } from '@/config/exercises';
 
@@ -110,7 +110,7 @@ export const StatsWidget = () => {
                   flex={1}
                   value={
                     key === 'totalDuration'
-                      ? timeFormat(stats?.summary[key])
+                      ? formatDuration(stats?.summary[key])
                       : stats?.summary[key]
                   }
                 />

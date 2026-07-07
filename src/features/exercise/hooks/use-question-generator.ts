@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { shuffle } from '@/utils/helpers';
-import { Question } from '@/utils/types';
+import { shuffle } from '@/utils/utils';
+import { Question } from '@/features/exercise/types';
 
 const MIN_MIDI = 48; // C3
 const MAX_MIDI = 59; // B3

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { getCurrentSessionRedirect, getCurrentUser } from '@/lib/sessions';
+import { getCurrentSessionRedirect, getCurrentUser } from '@/auth/sessions';
 import { SettingsPage } from '@/views/SettingsPage';
 
 export const metadata: Metadata = { title: 'Settings' };

@@ -100,8 +100,8 @@ const EmptyState = ({
             mt={4}
             size="sm"
             rounded="lg"
-       surfaceColor="purple.400"
-          shadowColor="purple.500"
+            surfaceColor="cobalt.500"
+            shadowColor="cobalt.600"
             showShimmer
           >
             {buttonConfig.copy}

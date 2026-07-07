@@ -3,7 +3,7 @@ import EmailProvider from 'next-auth/providers/email';
 
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
-import db from '@/lib/db';
+import db from '@/db/client';
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(db),
@@ -13,12 +13,12 @@ export const authConfig: NextAuthConfig = {
   providers: [
     EmailProvider({
       server: {
-        host: 'smtp.gmail.com',
-        port: 465,
         secure: true,
+        host: process.env.EMAIL_SERVER_HOST,
+        port: Number(process.env.EMAIL_SERVER_PORT),
         auth: {
-          user: process.env.EMAIL_FROM!,
-          pass: process.env.EMAIL_APP_PASSWORD!,
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
         },
         connectionTimeout: 20_000,
         greetingTimeout: 20_000,

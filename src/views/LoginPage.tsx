@@ -16,9 +16,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { getEmailProvider } from '@/lib/emails';
+import { getEmailProvider } from '@/auth/emails';
 import { useLogin } from '@/hooks/use-login';
-import { Layout } from '@/components/layout/Layout';
+import { Layout } from '@/components/Layout';
 import { ElevatedButton } from '@/components/ElevatedButton';
 
 const loggedOutCta = {
@@ -102,8 +102,8 @@ const AuthForm = () => {
             size="sm"
             type="submit"
             loading={isPending}
-            surfaceColor={email ? 'purple.400' : 'gray.fg'}
-            shadowColor={email ? 'purple.500' : undefined}
+            surfaceColor={email ? 'cobalt.500' : 'gray.fg'}
+            shadowColor={email ? 'cobalt.600' : undefined}
             disabled={!email}
             py={5}
           >

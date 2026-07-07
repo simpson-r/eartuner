@@ -11,9 +11,14 @@ import {
 } from '@chakra-ui/react';
 
 import Header from '@/components/Header';
-import { Toaster } from '../ui/toaster';
+import { Toaster } from '@/components/ui/toaster';
+
 type BaseLayoutProps = React.PropsWithChildren<{
   session: Session | null;
+}>;
+
+export type LayoutProps = Readonly<{
+  children: React.ReactNode;
 }>;
 
 /**
@@ -57,7 +62,7 @@ export const TitleBlock = ({
 }: PageHeaderProps) => (
   <Stack gap={2} {...props}>
     {typeof header === 'string' ? (
-      <Heading fontSize="3xl" as="h1">
+      <Heading fontSize={{ base: '2xl', md: '3xl' }} as="h1">
         {header}
       </Heading>
     ) : (
@@ -72,15 +77,8 @@ export const TitleBlock = ({
 );
 
 export const PageContainer = (props: StackProps) => (
-  <VStack
-    w="100%"
-    flex="1"
-    mx="auto"
-    py={10}
-    {...props}
-  />
+  <VStack w="full" flex="1" mx="auto" p={10} {...props} />
 );
-
 
 Layout.TitleBlock = TitleBlock;
 Layout.PageContainer = PageContainer;

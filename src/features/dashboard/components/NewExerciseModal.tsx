@@ -5,14 +5,15 @@ import { useRouter } from 'next/navigation';
 
 import { ExerciseType } from '@prisma/client';
 
-import { ExerciseConfig } from '@/utils/types';
+import { ExerciseConfig } from '@/features/exercise/types';
 import { ExerciseForm } from './ExerciseForm';
 import { HiX } from 'react-icons/hi';
+import { EXERCISE_NAME_MAP } from '@/utils/constants';
 
-const getModalCTA = (exerciseType = '') => {
+const getModalCTA = (exerciseType: ExerciseType) => {
   return {
-    heading: `Configure ${exerciseType.toLowerCase()} exercise`,
-    description: `Choose the ${exerciseType.toLowerCase()} types and number of questions.`,
+    heading: `Configure ${EXERCISE_NAME_MAP[exerciseType]} exercise`,
+    description: `Choose the ${EXERCISE_NAME_MAP[exerciseType]} types and number of questions.`,
   };
 };
 

@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 import { usePreferences } from '@/hooks/use-preferences';
-import { ClientPreferences } from '@/utils/types';
+import { ClientPreferences } from '@/features/exercise/types';
 
 interface PreferencesContextValue {
   preferences: ClientPreferences;

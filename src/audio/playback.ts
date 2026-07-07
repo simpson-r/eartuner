@@ -2,15 +2,17 @@
 
 import * as Tone from 'tone';
 import { chords, intervals, scaleDegrees, scales } from '@/config/theory';
-import { shuffle } from '@/utils/helpers';
-import { ChordInversion, PlaybackDirection } from '@/utils/types';
+import { shuffle } from '@/utils/utils';
+import { ChordInversion, PlaybackDirection } from '@/features/exercise/types';
 import { Sampler } from 'tone';
 
+/**
+ * CONSTANTS
+ */
+const ONE_SEC = 1000;
 const INT_VEL = 0.9;
 const CHORD_VEL = 0.5;
-
 const NOTE_DUR = 1;
-const ONE_SEC = 1000;
 const NOTE_DELAY = 0.8;
 const DEGREE_DELAY = 1.6;
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];

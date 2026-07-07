@@ -4,6 +4,7 @@ import { HiX } from 'react-icons/hi';
 
 import {
   Button,
+  Flex,
   HStack,
   Icon,
   Progress,
@@ -11,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { ConfirmationModal } from '../../../components/ConfirmationModal';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export const PlayerHeader = ({
   progress,
@@ -32,39 +33,46 @@ export const PlayerHeader = ({
   const handleExit = () => router.push('/');
 
   return (
-    <HStack justifyContent="space-between" align="center" minH="70px" px={28}>
-      {/* exit button */}
-      <Button variant="ghost" size="sm" onClick={onModalOpen} asChild>
-        <Icon as={HiX} boxSize={14} color="fg.muted" />
-      </Button>
-      {/* progress bar */}
-      <Progress.Root
-        w="7/12"
-        shape="full"
-        size="lg"
-        colorPalette="green"
-        value={progress}
-        striped
+    <Flex w="full" justify="center">
+      <HStack
+        justifyContent="space-between"
+        align="center"
+        minH="70px"
+        w="11/12"
       >
-        <Progress.Track>
-          <Progress.Range />
-        </Progress.Track>
-      </Progress.Root>
-      {/* cur / total */}
-      <Text fontWeight="bold" color="fg.muted">
-        {curQuestion}/{totalQuestions}
-      </Text>
-      <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={onModalClose}
-        onConfirm={handleExit}
-        ctaConfig={{
-          heading: 'Are you sure?',
-          body: 'If you quit, you will lose your progress.',
-          cancelText: 'Keep practicing',
-          confirmText: 'Quit',
-        }}
-      />
-    </HStack>
+        {/* exit button */}
+        <Button variant="ghost" size="sm" onClick={onModalOpen} asChild>
+          <Icon as={HiX} boxSize={14} color="fg.muted" />
+        </Button>
+        {/* progress bar */}
+        <Progress.Root
+          w="7/12"
+          shape="full"
+          size="xl"
+          colorPalette="green"
+          value={progress}
+          striped
+        >
+          <Progress.Track>
+            <Progress.Range />
+          </Progress.Track>
+        </Progress.Root>
+        {/* cur / total */}
+        <Text fontWeight="bold" color="fg.muted">
+          {curQuestion}/{totalQuestions}
+        </Text>
+        <ConfirmationModal
+          isOpen={isModalOpen}
+          onClose={onModalClose}
+          onConfirm={handleExit}
+          ctaConfig={{
+            heading: 'Are you sure?',
+            body: 'If you quit, you will lose your progress.',
+            cancelText: 'Keep practicing',
+            confirmText: 'Quit',
+          }}
+        />
+      </HStack>
+    </Flex>
   );
 };

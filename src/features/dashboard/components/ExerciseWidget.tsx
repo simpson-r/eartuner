@@ -48,9 +48,9 @@ export const ExerciseWidget = ({
             >
               {/* heading + description */}
               <VStack align="start" h="full" w="full" gap={6}>
-                <Icon as={icon} boxSize={{ base: '30px', md: '60px' }} />
+                <Icon as={icon} boxSize={{ base: '48px', md: '60px' }} />
                 <VStack align="flex-start">
-                  <Heading fontSize={{ base: 'sm', md: 'lg' }}>
+                  <Heading fontSize={{ base: 'md', md: 'lg' }}>
                     {title}
                   </Heading>
                   <Text

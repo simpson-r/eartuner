@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 
+import { getCurrentUser } from '@/auth/sessions';
+import { ExerciseConfig } from '@/features/exercise/types';
 import { PlayerPage } from '@/views/PlayerPage';
-import { exerciseConfigSchema } from '@/config/parse';
-import { getCurrentUser } from '@/lib/sessions';
-import { ExerciseConfig } from '@/utils/types';
+import { parseExerciseConfig } from './util';
 
 type PageProps = {
   searchParams: Promise<{
@@ -23,14 +23,3 @@ const ExercisePlayer = async ({ searchParams }: PageProps) => {
 };
 
 export default ExercisePlayer;
-
-function parseExerciseConfig(raw?: string) {
-  if (!raw) return null;
-
-  try {
-    const parsed = JSON.parse(atob(raw));
-    return exerciseConfigSchema.parse(parsed);
-  } catch {
-    return null;
-  }
-}

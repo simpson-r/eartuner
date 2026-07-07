@@ -19,7 +19,7 @@ import {
   ExerciseMetadata,
   PlaybackDirection,
   Question,
-} from '@/utils/types';
+} from '@/features/exercise/types';
 import { usePreferencesContext } from '@/context/PreferencesContext';
 
 /**
@@ -132,7 +132,7 @@ export const useExercisePlayer = (
 
   const { preferences } = usePreferencesContext();
   const { generateQuestion } = useQuestionGenerator(items);
-  const { create, isCreateSuccess, newAttempt } = useHistory();
+  const { create, newAttempt } = useHistory();
 
   const durationRef = useRef(0);
   const hasPostedAttempt = useRef(false);
@@ -285,6 +285,8 @@ export const useExercisePlayer = (
     }
   };
 
+  console.log({ playing: state.playing, instrument });
+
   /**
    * DERIVED VARIABLES
    */
@@ -300,13 +302,14 @@ export const useExercisePlayer = (
 
   return {
     state,
+    exerciseType: type,
     duration: durationRef.current,
     options,
     status,
     attempt: newAttempt,
     progress,
-    isCreateSuccess,
+    canPlayAudio: !!instrument && !state.playing,
     dispatch,
-    actions: { playSound },
+    playSound,
   };
 };

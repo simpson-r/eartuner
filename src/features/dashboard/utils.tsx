@@ -1,12 +1,10 @@
 import { createListCollection } from '@chakra-ui/react';
 import { ExerciseType } from '@prisma/client';
 
-import { CollectionConfig } from '@/utils/types';
-
-
+import { CollectionConfig } from '@/features/exercise/types';
 
 /**
- * Collections assorted by exercise type
+ * COLLECTIONS BY EXERCISE TYPE
  */
 export const collections = {
   interval: {

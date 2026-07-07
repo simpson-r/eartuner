@@ -14,14 +14,9 @@ import { LuMoon, LuSun } from 'react-icons/lu';
 
 export type ColorModeProviderProps = ThemeProviderProps;
 
-export function ColorModeProvider(props: ColorModeProviderProps) {
-  const scriptProps =
-    typeof window !== 'undefined'
-      ? ({ type: 'application/json' } as const)
-      : undefined;
-
+export function ColorModeProvider(props: ThemeProviderProps) {
   return (
-    <ThemeProvider attribute="class" scriptProps={scriptProps} {...props} />
+    <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
   );
 }
 
