@@ -1,10 +1,11 @@
-import { LoginPage } from "@/components/pages/LoginPage";
-import { getCurrentUser } from "@/lib/sessions";
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
+
+import { getCurrentUser } from '@/lib/sessions';
+import { LoginPage } from '@/views/LoginPage';
 
 const Login = async () => {
   const user = await getCurrentUser();
-  if (user) redirect("/dashboard");
+  if (user) redirect('/dashboard');
 
   return <LoginPage />;
 };

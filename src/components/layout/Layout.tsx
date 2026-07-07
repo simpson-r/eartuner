@@ -1,22 +1,86 @@
-import { Session } from "next-auth";
-import React from "react";
+import { Session } from 'next-auth';
+import React from 'react';
 
-import { Flex } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Stack,
+  StackProps,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
-import { Toaster } from "../ui/toaster";
+import Header from '@/components/Header';
+import { Toaster } from '../ui/toaster';
+type BaseLayoutProps = React.PropsWithChildren<{
+  session: Session | null;
+}>;
 
-const Layout = ({
-  children,
-  session,
-}: React.PropsWithChildren<{ session: Session | null }>) => (
-  <Flex direction="column" h="100vh" w="100vw">
-    <Header session={session} />
-    <Flex h="calc(100vh - 7rem)">{children}</Flex>
-    <Footer />
-    <Toaster />
-  </Flex>
+/**
+ * LAYOUT COMPONENTS
+ */
+export const Layout = ({ children, session }: BaseLayoutProps) => {
+  return (
+    <Flex direction="column" minH="100dvh" w="100vw" bgColor="bg.panel">
+      <Header session={session} />
+      <Flex as="main" flex="1" w="100%" overflow="auto">
+        {children}
+      </Flex>
+      <Toaster />
+    </Flex>
+  );
+};
+
+export const PlayerLayout = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Flex direction="column" minH="100dvh" w="100vw" bgColor="bg.panel">
+      <Flex as="main" flex="1" w="100%" overflow="auto">
+        {children}
+      </Flex>
+      <Toaster />
+    </Flex>
+  );
+};
+
+interface PageHeaderProps extends Omit<StackProps, 'children'> {
+  header: React.ReactNode;
+  description?: React.ReactNode;
+}
+
+/**
+ * LAYOUT SUBCOMPONENTS
+ */
+export const TitleBlock = ({
+  header,
+  description,
+  ...props
+}: PageHeaderProps) => (
+  <Stack gap={2} {...props}>
+    {typeof header === 'string' ? (
+      <Heading fontSize="3xl" as="h1">
+        {header}
+      </Heading>
+    ) : (
+      header
+    )}
+    {description && (
+      <Text fontSize="sm" color="fg.muted">
+        {description}
+      </Text>
+    )}
+  </Stack>
 );
 
-export default Layout;
+export const PageContainer = (props: StackProps) => (
+  <VStack
+    w="100%"
+    flex="1"
+    mx="auto"
+    py={10}
+    {...props}
+  />
+);
+
+
+Layout.TitleBlock = TitleBlock;
+Layout.PageContainer = PageContainer;

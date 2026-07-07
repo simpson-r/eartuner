@@ -1,4 +1,9 @@
-import { Checkbox as ChakraCheckbox, Text, Stack } from "@chakra-ui/react";
+import {
+  Checkbox as ChakraCheckbox,
+  Text,
+  Stack,
+  CheckboxRootProps,
+} from "@chakra-ui/react";
 
 /**
  * This component renders a reusable checkbox using Chakra's "Checkbox" primitive.
@@ -8,18 +13,17 @@ export const Checkbox = ({
   label,
   description,
   onCheckedChange,
+  ...props
 }: {
   checked: boolean;
   label: string;
   description?: string;
-  onCheckedChange: (checked: boolean) => void;
-}) => {
+} & CheckboxRootProps) => {
   return (
     <ChakraCheckbox.Root
       checked={checked}
-      onCheckedChange={(details) => {
-        onCheckedChange(!!details.checked);
-      }}
+      onCheckedChange={onCheckedChange}
+      {...props}
     >
       <ChakraCheckbox.HiddenInput />
       <ChakraCheckbox.Control />
@@ -29,7 +33,7 @@ export const Checkbox = ({
             {label}
           </Text>
           {description && (
-            <Text fontWeight="normal" fontSize="xs" color="gray.500">
+            <Text fontWeight="normal" fontSize="xs" color="fg.muted">
               {description}
             </Text>
           )}

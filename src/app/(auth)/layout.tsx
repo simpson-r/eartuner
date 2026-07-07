@@ -1,11 +1,22 @@
-import { getCurrentUserOrRedirect } from "@/lib/sessions";
+import type { Metadata } from 'next';
 
-type Props = {
-  children: React.ReactNode;
+import { Layout } from '@/components/layout/Layout';
+import { getCurrentSessionRedirect } from '@/lib/sessions';
+
+export const metadata: Metadata = {
+  title: 'Ear Trainer',
+  description: 'Create personalized training exercises',
 };
 
-export default async function Layout({ children }: Props) {
-  await getCurrentUserOrRedirect();
+/**
+ * This component renders the layout for the root layout for the webapp
+ */
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const session = await getCurrentSessionRedirect();
 
-  return <>{children}</>;
+  return <Layout session={session}>{children}</Layout>;
 }

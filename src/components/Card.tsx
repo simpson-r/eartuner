@@ -1,20 +1,21 @@
-import React from "react";
+import React from 'react';
 
 import {
   Box,
-  Button,
+  BoxProps,
   Center,
-  Container,
   Heading,
   Icon,
   Link,
   Spinner,
   Stack,
   Text,
+  VStack,
   type StackProps,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { IconType } from "react-icons/lib";
+import { IconType } from 'react-icons/lib';
+import { ElevatedButton } from './ElevatedButton';
 
 /**
  * This component renders a pure functional "Card" component that houses widget-like lists within the dashboard
@@ -25,11 +26,12 @@ export const Card = ({
 }: React.PropsWithChildren<StackProps>) => {
   return (
     <Stack
-      p={6}
+      display="flex"
+      p={5}
       h="full"
-      minH="16rem"
+      minH="12rem"
       rounded="lg"
-      border="1px solid"
+      border="2px solid"
       borderColor="border"
       {...props}
     >
@@ -38,11 +40,12 @@ export const Card = ({
   );
 };
 
-const Header = ({ children }: React.PropsWithChildren) => {
+const Header = ({ children, ...props }: React.PropsWithChildren<BoxProps>) => {
   return (
-    <Box position="sticky" top="0" background="bg" h={8}>
-      <Heading fontSize="xl">{children}</Heading>
-      <Box w="100%" h="1px" bgColor="border" />
+    <Box position="sticky" top="0" {...props}>
+      <Heading fontSize="inherit" fontWeight="inherit">
+        {children}
+      </Heading>
     </Box>
   );
 };
@@ -81,34 +84,31 @@ const EmptyState = ({
   };
 }) => {
   return (
-    <Container
-      h="full"
-      w="full"
-      margin="auto"
-      justifyContent="center"
-      centerContent
-    >
-      {icon && <Icon as={icon} size="lg" color="fg" />}
-      <Text fontSize="sm">{primaryText}</Text>
-      {secondaryText && (
-        <Text fontSize="xs" color="gray.500">
-          {secondaryText}
-        </Text>
-      )}
+    <Stack flex="1" minH={0} justify="center" align="center" gap={2}>
+      {icon && <Icon as={icon} size="lg" />}
+      <VStack fontSize="sm" gap={0}>
+        {primaryText}
+        {secondaryText && (
+          <Text fontSize="xs" color="fg.muted">
+            {secondaryText}
+          </Text>
+        )}
+      </VStack>
       {buttonConfig && (
         <Link href={buttonConfig.href} textDecorationLine="none">
-          <Button
+          <ElevatedButton
             mt={4}
             size="sm"
             rounded="lg"
-            bgColor="cobalt.500"
-            _hover={{ bgColor: "cobalt.600" }}
+       surfaceColor="purple.400"
+          shadowColor="purple.500"
+            showShimmer
           >
             {buttonConfig.copy}
-          </Button>
+          </ElevatedButton>
         </Link>
       )}
-    </Container>
+    </Stack>
   );
 };
 

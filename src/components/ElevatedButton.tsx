@@ -1,0 +1,60 @@
+import { Button, ButtonProps, defaultSystem } from '@chakra-ui/react';
+import { BUTTON_SHIMMER_SX } from './style';
+
+interface PressButtonProps extends ButtonProps {
+  icon?: React.ReactElement;
+  surfaceColor?: string;
+  shadowColor?: string;
+  showShimmer?: boolean;
+}
+
+export const ElevatedButton = ({
+  icon,
+  surfaceColor = 'bg.subtle',
+  shadowColor = 'border',
+  showShimmer,
+  children,
+  ...props
+}: React.PropsWithChildren<PressButtonProps>) => {
+  const { disabled } = props;
+  const iconOnly = !children;
+
+  const shadow = defaultSystem.token.var(`colors.${shadowColor}`); // get token var for shadow tokens
+
+  return (
+    <Button
+      display="inline-flex"
+      alignItems="center"
+      justifyContent="center"
+      bg={surfaceColor}
+      color={surfaceColor === 'bg.subtle' ? 'fg' : 'white'}
+      border={surfaceColor === 'bg.subtle' ? '2px solid' : 'none'}
+      borderColor="border"
+      borderRadius="3xl"
+      // 3d button transition props
+      transform={disabled ? 'translateY(4px)' : 'translateY(0)'}
+      transition="transform 0.2s ease-in out"
+      boxShadow={`0 ${disabled ? '0px' : iconOnly ? '8px' : '6px'} 0 ${shadow}`}
+      _hover={{
+        bg: disabled
+          ? undefined
+          : surfaceColor === 'bg.subtle'
+            ? 'bg.muted'
+            : surfaceColor,
+        transform: disabled ? undefined : 'translateY(-1px)',
+        boxShadow: disabled
+          ? undefined
+          : `0 ${iconOnly ? '10px' : '8px'} 0 ${shadow}`,
+        _active: {
+          transform: disabled ? undefined : 'translateY(6px)',
+          boxShadow: `0 0px 0 ${shadow}`,
+        },
+      }}
+      // shimmmer animation (optional)
+      css={showShimmer ? BUTTON_SHIMMER_SX : undefined}
+      {...props}
+    >
+      {iconOnly ? icon : children}
+    </Button>
+  );
+};
