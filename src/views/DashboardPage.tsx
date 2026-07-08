@@ -19,7 +19,7 @@ const pageCTA = {
 export const DashboardPage = () => {
   return (
     <Layout.PageContainer>
-      <Stack w="full" maxW={{ base: 'full', md: '9/12' }} mx="auto" gap={8}>
+      <Stack w="full" maxW="900px" mx="auto" gap={8} px={{ base: 4, md: 0 }}>
         <Layout.TitleBlock
           header={pageCTA.header}
           description={pageCTA.description}
@@ -27,16 +27,17 @@ export const DashboardPage = () => {
 
         <ExerciseWidget
           gridTemplateColumns={{
-            base: 'repeat(2, minmax(0, 1fr))',
+            base: 'repeat(2, 1fr)',
             md: 'repeat(4, minmax(160px, 1fr))',
           }}
         />
+
         <SimpleGrid
           gridTemplateColumns={{
             base: '1fr',
-            sm: '1fr 1.6fr',
+            md: '1fr 1fr',
           }}
-          w='full'
+          w="full"
           gap={8}
         >
           <ActivityWidget />

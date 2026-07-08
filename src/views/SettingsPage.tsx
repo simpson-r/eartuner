@@ -69,7 +69,7 @@ export const SettingsPage = ({
 
   const created =
     user?.createdAt &&
-    new Date(user?.createdAt).toLocaleDateString(undefined, {
+    new Date(user?.createdAt).toLocaleDateString('en-GB', {
       month: 'long',
       year: 'numeric',
     });

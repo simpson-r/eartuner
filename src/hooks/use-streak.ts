@@ -42,7 +42,7 @@ export const useStreak = () => {
       ? {
           ...data,
           lastDate: data.lastDate
-            ? new Date(data.lastDate).toLocaleDateString(undefined, {
+            ? new Date(data.lastDate).toLocaleDateString('en-GB', {
                 month: 'short',
                 day: 'numeric',
               })

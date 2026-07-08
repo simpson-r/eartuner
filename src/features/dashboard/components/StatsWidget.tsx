@@ -10,7 +10,7 @@ import { HStack, Separator, Text, VStack } from '@chakra-ui/react';
 import { Stat } from '@/components/Stat';
 import { formatDuration } from '@/features/exercise/utils';
 import { Fragment } from 'react';
-import {  EXERCISE_LABEL_CONFIG } from '@/config/exercises';
+import { EXERCISE_LABEL_CONFIG } from '@/config/exercises';
 
 const STATS_MAP: {
   label: string;
@@ -51,7 +51,9 @@ export const StatsWidget = () => {
         <VStack h="full">
           {/* pie chart  */}
           {showEmptyStateCTA ? (
-            <Text fontSize="sm" h="140px" alignContent="center">Complete your first exercise to unlock your progress</Text>
+            <Text fontSize="sm" h="140px" alignContent="center">
+              Complete your first exercise to unlock your progress
+            </Text>
           ) : (
             <Chart.Root
               chart={chart}
@@ -88,7 +90,7 @@ export const StatsWidget = () => {
             bgColor="bg.muted"
             borderRadius="md"
             w="full"
-            display={{ sm: 'none', md: 'flex' }}
+            display={{ base: 'none', md: 'flex' }}
             p={4}
           >
             {STATS_MAP.map(({ label, key }, index) => (
@@ -98,6 +100,7 @@ export const StatsWidget = () => {
                     orientation="vertical"
                     height="32px"
                     borderColor="border"
+                    pt={{ base: '8px' }}
                   />
                 )}
                 <Stat

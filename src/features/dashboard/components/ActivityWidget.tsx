@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react';
-import { Text, Stack, HStack, Separator } from '@chakra-ui/react';
+import { Text, Stack, HStack, Separator, Box } from '@chakra-ui/react';
 import { Card } from '@/components/Card';
 import { Streak } from './ActivityWidget.style';
 import { useStreak } from '@/hooks/use-streak';
@@ -50,8 +50,7 @@ export const ActivityWidget = () => {
         <Card.Content
           w="full"
           h="full"
-          justify={{ base: 'center', md: 'space-between' }}
-          gap={3}
+          justify={{ base: 'center', md: 'space-around' }}
         >
           {!current && (
             <Text fontSize="sm">
@@ -59,7 +58,14 @@ export const ActivityWidget = () => {
             </Text>
           )}
 
-          <HStack w="full" justify="space-between">
+          <HStack
+            w="full"
+            flex={1}
+            maxW="fit-content"
+            mx="auto"
+            justify="flex-start"
+            align="center"
+          >
             {visibleDays.map((day, index) => (
               <Stack key={`${day.label}-${index}`} align="center" gap={1}>
                 <Streak.Circle active={day.active} />
@@ -74,34 +80,31 @@ export const ActivityWidget = () => {
             ))}
           </HStack>
 
-          <HStack
-            borderRadius="md"
-            bgColor="bg.muted"
-            w="full"
-            p={3}
-          >
-            {STREAK_STATS.map(({ label, key }, index) => (
-              <Fragment key={key}>
-                {index > 0 && (
-                  <Separator
-                    orientation="vertical"
-                    height="32px"
-                    borderColor="border"
+          <Box minH="60px">
+            <HStack borderRadius="md" bgColor="bg.muted" w="full" p={3}>
+              {STREAK_STATS.map(({ label, key }, index) => (
+                <Fragment key={key}>
+                  {index > 0 && (
+                    <Separator
+                      orientation="vertical"
+                      height="32px"
+                      borderColor="border"
+                    />
+                  )}
+                  <Stat
+                    key={key}
+                    label={label}
+                    value={streak[key] as number | string}
+                    justify="center"
+                    align="center"
+                    fontSize="xs"
+                    flex={1}
+                    gap={0}
                   />
-                )}
-                <Stat
-                  key={key}
-                  label={label}
-                  value={streak[key] as number | string}
-                  justify="center"
-                  align="center"
-                  fontSize="xs"
-                  flex={1}
-                  gap={0}
-                />
-              </Fragment>
-            ))}
-          </HStack>
+                </Fragment>
+              ))}
+            </HStack>
+          </Box>
         </Card.Content>
       )}
     </Card>

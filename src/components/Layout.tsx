@@ -62,7 +62,7 @@ export const TitleBlock = ({
 }: PageHeaderProps) => (
   <Stack gap={2} {...props}>
     {typeof header === 'string' ? (
-      <Heading fontSize={{ base: '2xl', md: '3xl' }} as="h1">
+      <Heading fontSize='3xl' as="h1">
         {header}
       </Heading>
     ) : (

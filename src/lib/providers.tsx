@@ -33,7 +33,7 @@ export function Providers({
   return (
     <ChakraProvider value={system}>
       <ColorModeProvider>
-        <SessionProvider session={session}>
+        <SessionProvider session={session} refetchOnWindowFocus={false}>
           <QueryClientProvider client={queryClient}>
             <PreferencesProvider>{children}</PreferencesProvider>
           </QueryClientProvider>

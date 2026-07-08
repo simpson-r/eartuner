@@ -13,7 +13,6 @@ import {
   IconButton,
   Link,
   useDisclosure,
-  Text,
 } from '@chakra-ui/react';
 
 import { Menu } from '@/components/ui/menu';
@@ -71,31 +70,15 @@ export const Header = ({ session }: { session: Session | null }) => {
       borderBottom="1px solid"
       borderColor="border"
       minH="70px"
-      px={{ base: 10, md: 28 }}
+      px={{ base: 10, md: 24 }}
       gap={8}
     >
       {/* left-aligned nav */}
-      <HStack gap={8} align="baseline">
-        <Heading size="3xl" color="fg" asChild>
-          <Link href="/" textDecorationLine="none">
-            EarTuner
-          </Link>
+      <Link href="/" textDecoration="none">
+        <Heading size={{ base: '2xl', md: '3xl' }} cursor="pointer">
+          EarTuner
         </Heading>
-
-        {session?.user.id && pathname !== '/dashboard' && (
-          <Link
-            onClick={() => router.push('/dashboard')}
-            display="flex"
-            h="full"
-            color="fg.muted"
-            _hover={{ color: 'fg' }}
-            textDecorationLine="none"
-            asChild
-          >
-            <Text>Dashboard</Text>
-          </Link>
-        )}
-      </HStack>
+      </Link>
 
       {/* right-aligned nav */}
       {session?.user.id ? (

@@ -49,7 +49,7 @@ export const PlayerFooter = ({
       h="full"
     >
       <HStack
-        w={{ base: '11/12', md: '7/12' }}
+        w={{ base: 'full', md: '7/12' }}
         align="center"
         justify={finished ? 'center' : 'space-between'}
         gap={{ base: 12 }}

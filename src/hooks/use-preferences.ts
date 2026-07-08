@@ -45,7 +45,6 @@ export const usePreferences = () => {
       },
 
       onError: (err, newPreferences, context) => {
-        // rollback to old data if API fails
         if (context?.prev) {
           queryClient.setQueryData(['preferences'], context.prev);
         }
@@ -53,6 +52,7 @@ export const usePreferences = () => {
           description: 'Preference failed to update',
           type: 'error',
         });
+        queryClient.invalidateQueries({ queryKey: ['preferences'] });
       },
 
       onSuccess: () => {
@@ -60,10 +60,6 @@ export const usePreferences = () => {
           description: 'Preference updated',
           type: 'info',
         });
-      },
-
-      onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ['preferences'] });
       },
     },
   );
