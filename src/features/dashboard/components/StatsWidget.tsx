@@ -5,7 +5,7 @@ import { Legend, Pie, PieChart, Sector, Tooltip } from 'recharts';
 import { Chart, useChart } from '@chakra-ui/charts';
 
 import { Card } from '@/components/Card';
-import { BreakdownByType, StatsResponse, useStats } from '@/hooks/use-stats';
+import { BreakdownByType, MeStatsResponse, useMeStats } from '@/hooks/use-me-stats';
 import { HStack, Separator, Text, VStack } from '@chakra-ui/react';
 import { Stat } from '@/components/Stat';
 import { formatDuration } from '@/features/exercise/utils';
@@ -14,7 +14,7 @@ import { EXERCISE_LABEL_CONFIG } from '@/config/exercises';
 
 const STATS_MAP: {
   label: string;
-  key: keyof StatsResponse['summary'];
+  key: keyof MeStatsResponse['summary'];
 }[] = [
   { label: 'Sessions', key: 'totalAttempts' },
   { label: 'Avg score', key: 'averageScore' },
@@ -25,7 +25,7 @@ const STATS_MAP: {
  * This component renders a list of stats to be displayed on the user's dashboard
  */
 export const StatsWidget = () => {
-  const { stats, isLoadingStats } = useStats();
+  const { stats, isLoadingMeStats } = useMeStats();
 
   const showEmptyStateCTA = !stats?.breakdownByType.length;
   const chart = useChart({
@@ -45,9 +45,9 @@ export const StatsWidget = () => {
         Your progress
       </Card.Header>
 
-      {isLoadingStats && <Card.LoadingState />}
+      {isLoadingMeStats && <Card.LoadingState />}
 
-      {!isLoadingStats && stats && (
+      {!isLoadingMeStats && stats && (
         <VStack h="full">
           {/* pie chart  */}
           {showEmptyStateCTA ? (

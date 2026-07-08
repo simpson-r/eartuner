@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { auth } from '@/auth/auth';
 import db from '@/db/client';
+import { daysBetween } from '@/utils/utils';
 
 /**
  * GET /api/me/stats
@@ -9,16 +10,8 @@ import db from '@/db/client';
  * Fetches the authenticated user's stats.
  *
  * Response:
- *   200 OK - JSON object containing a list of exercises:
- *  {
- *    totalAttempts: number;
- *    averageScore: number;
- *    bestScore: number;
- *    totalQuestions: number;
- *   }
- *
+ *   200 OK - JSON object containing an aggregated summary of statistics broken down by type, as well as, streak data
  *   401 Unauthorized - if the user is not authenticated
- *   404 Not Found - if no exercise exists with the given ID
  */
 export async function GET() {
   const session = await auth();
@@ -28,46 +21,64 @@ export async function GET() {
   }
   const userId = session.user.id;
 
-  const [summary, stats] = await Promise.all([
+  const [summaryAgg, breakdownAgg, streak] = await Promise.all([
     db.exercise.aggregate({
       where: { userId },
       _count: { id: true },
-      _avg: { score: true },
-      _max: { score: true },
       _sum: { numQuestions: true, durationSec: true },
+      _avg: { score: true },
     }),
+
     db.exercise.groupBy({
       by: ['exerciseType'],
       where: { userId },
-      _sum: { numQuestions: true, durationSec: true },
-      _avg: { score: true },
       _count: { id: true },
+      _sum: { numQuestions: true },
+      _avg: { score: true },
     }),
+
+    db.streak.findUnique({ where: { userId } }),
   ]);
 
-  if (!summary || !stats) {
-    return NextResponse.json(null, { status: 404 });
-  }
+  const summary = {
+    averageScore: summaryAgg._avg.score?.toFixed(2) ?? 0,
+    totalAttempts: summaryAgg._count.id,
+    totalQuestions: summaryAgg._sum.numQuestions ?? 0,
+    totalDuration: summaryAgg._sum.durationSec ?? 0,
+  };
 
-  // create array of aggregate broken down by type
-  const breakdownByType = stats.map((stat) => {
-    return {
-      type: stat.exerciseType,
-      questions: stat._sum.numQuestions ?? 0,
-      attempts: stat._count.id ?? 0,
-      averageScore: stat._avg.score ?? 0,
-    };
-  });
+  const breakdownByType = breakdownAgg.map((group) => ({
+    type: group.exerciseType,
+    questions: group._sum.numQuestions ?? 0,
+    attempts: group._count.id,
+    averageScore: group._avg.score ?? 0,
+  }));
+
+  const today = new Date();
+  const delta = streak?.lastDate ? daysBetween(streak.lastDate, today) : null;
+  const current = (delta ?? 0) > 1 ? 0 : streak?.current;
+
+  const streakData = streak
+    ? {
+        current,
+        longest: streak.longest,
+        started: streak.startedAt,
+        lastDate: streak.lastDate,
+        totalAttempts: summaryAgg._count.id ?? 0,
+        hasCompletedToday: delta === 0,
+      }
+    : {
+        current: 0,
+        longest: 0,
+        started: null,
+        lastDate: null,
+        totalAttempts: 0,
+        hasCompletedToday: false,
+      };
 
   return NextResponse.json({
-    summary: {
-      averageScore: summary._avg.score
-        ? Math.round(summary._avg.score * 100) / 100
-        : 0,
-      totalAttempts: summary._count.id ?? 0,
-      totalQuestions: summary._sum.numQuestions,
-      totalDuration: summary._sum.durationSec,
-    },
+    summary,
     breakdownByType,
+    streak: streakData,
   });
 }

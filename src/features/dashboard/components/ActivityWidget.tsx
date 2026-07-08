@@ -2,14 +2,14 @@ import { Fragment, useMemo } from 'react';
 import { Text, Stack, HStack, Separator, Box } from '@chakra-ui/react';
 import { Card } from '@/components/Card';
 import { Streak } from './ActivityWidget.style';
-import { useStreak } from '@/hooks/use-streak';
 import { Stat } from '@/components/Stat';
+import { useMeStats } from '@/hooks/use-me-stats';
 
 const VISIBLE_DAYS = 5;
 const MAX_ROLLBACK = 4;
 const DAYS_OF_WEEK = ['Su', 'M', 'T', 'W', 'Th', 'F', 'S'];
 
-type Streak = NonNullable<ReturnType<typeof useStreak>['streak']>;
+type Streak = NonNullable<ReturnType<typeof useMeStats>['streak']>;
 
 const STREAK_STATS: Array<{ label: string; key: keyof Streak }> = [
   { label: 'Max streak', key: 'longest' },
@@ -20,14 +20,15 @@ const STREAK_STATS: Array<{ label: string; key: keyof Streak }> = [
  * This component displays the user'scurrent streak count and a visual calendar tracking streak progress.
  */
 export const ActivityWidget = () => {
-  const { streak, isLoadingStreak } = useStreak();
+  const { streak, isLoadingMeStats } = useMeStats();
   const { current } = streak;
 
   const visibleDays = useMemo(() => {
     const day = new Date().getDay();
 
     return Array.from({ length: VISIBLE_DAYS }, (_, index) => {
-      const rollback = current > 1 ? Math.min(MAX_ROLLBACK, current - 1) : 0;
+      const rollback =
+        (current || 0) > 1 ? Math.min(MAX_ROLLBACK, (current || 0) - 1) : 0;
       const dayIdx = (day - rollback + index + 7) % 7;
       const offset = index - rollback;
 
@@ -44,7 +45,7 @@ export const ActivityWidget = () => {
       <Card.Header fontSize="md" fontWeight="bold">
         Streak
       </Card.Header>
-      {isLoadingStreak ? (
+      {isLoadingMeStats ? (
         <Card.LoadingState />
       ) : (
         <Card.Content

@@ -1,6 +1,7 @@
 'use client';
 
 import { User } from 'next-auth';
+import { signOut } from 'next-auth/react';
 import { useRef, useState } from 'react';
 
 import {
@@ -19,16 +20,14 @@ import { Layout } from '@/components/Layout';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { toaster } from '@/components/ui/toaster';
 import { useHistory } from '@/hooks/use-history';
+import { ClientPreferences } from '@/features/exercise/types';
+import { usePreferences } from '@/hooks/use-preferences';
 import { useUser } from '@/hooks/use-user';
 import {
   LeftAlignedSegment,
   LeftAlignedSwitch,
   Section,
 } from '@/views/SettingsPage.style';
-
-import { ClientPreferences } from '@/features/exercise/types';
-import { usePreferencesContext } from '@/context/PreferencesContext';
-import { signOut } from 'next-auth/react';
 
 type AccountAction = 'reset' | 'delete';
 
@@ -58,7 +57,7 @@ export const SettingsPage = ({
   const [action, setAction] = useState<AccountAction>('reset');
   const { resetHistory, isResetting } = useHistory();
   const { deleteAccount, isDeletingAccount } = useUser();
-  const { updatePreferences, preferences } = usePreferencesContext();
+  const { updatePreferences, preferences } = usePreferences();
   const hasPatchedPref = useRef(false);
 
   const {

@@ -39,7 +39,7 @@ export const CompletionScreen = ({
   const cta = getPerformanceCTA(score);
 
   const statsToDisplay = useMemo(() => {
-    const roundedScore = Math.round(score * 100) / 100;
+    const roundedScore = score.toFixed(2);
     return [
       { label: 'Score', value: `${roundedScore}%` },
       { label: 'Questions', value: state.total },

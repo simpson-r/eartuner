@@ -7,10 +7,8 @@ import { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { PreferencesProvider } from '@/context/PreferencesContext';
 import { ColorModeProvider } from '@/theme/color-mode';
 import { system } from '@/theme';
-
 
 export function Providers({
   session,
@@ -35,7 +33,7 @@ export function Providers({
       <ColorModeProvider>
         <SessionProvider session={session} refetchOnWindowFocus={false}>
           <QueryClientProvider client={queryClient}>
-            <PreferencesProvider>{children}</PreferencesProvider>
+            {children}
           </QueryClientProvider>
         </SessionProvider>
       </ColorModeProvider>

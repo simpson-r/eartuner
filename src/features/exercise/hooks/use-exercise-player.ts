@@ -12,6 +12,7 @@ import {
   scales,
 } from '@/config/theory';
 import { useHistory } from '@/hooks/use-history';
+import { usePreferences } from '@/hooks/use-preferences';
 import { useQuestionGenerator } from './use-question-generator';
 import {
   ChordInversion,
@@ -20,7 +21,6 @@ import {
   PlaybackDirection,
   Question,
 } from '@/features/exercise/types';
-import { usePreferencesContext } from '@/context/PreferencesContext';
 
 /**
  * TYPES & INTERFACES
@@ -130,12 +130,14 @@ export const useExercisePlayer = (
 
   const [instrument, setInstrument] = useState<Tone.Sampler>();
 
-  const { preferences } = usePreferencesContext();
+  const { preferences } = usePreferences();
   const { generateQuestion } = useQuestionGenerator(items);
   const { create, newAttempt } = useHistory();
 
   const durationRef = useRef(0);
   const hasPostedAttempt = useRef(false);
+  const correctPlayerRef = useRef<Tone.Player | null>(null);
+  const wrongPlayerRef = useRef<Tone.Player | null>(null);
 
   const options = items.map((item) => ({
     label: labels[item as keyof typeof labels],
@@ -153,18 +155,33 @@ export const useExercisePlayer = (
     }
   }, [generateQuestion, state.question, state.finished]);
 
+  // load feedback sound players
+  useEffect(() => {
+    correctPlayerRef.current = new Tone.Player(CORRECT_DEST).toDestination();
+    wrongPlayerRef.current = new Tone.Player(WRONG_DEST).toDestination();
+
+    return () => {
+      correctPlayerRef.current?.dispose();
+      wrongPlayerRef.current?.dispose();
+    };
+  }, [preferences?.lessonSoundEffects]);
+
   // play feedback sounds
   useEffect(() => {
     if (state.meta.length === 0 || !preferences?.lessonSoundEffects) return;
     const lastResult = state.meta[state.meta.length - 1];
+
     const playFeedbackSound = async () => {
       if (Tone.getContext().state !== 'running') return;
 
-      try {
-        const soundUrl = lastResult.correct ? CORRECT_DEST : WRONG_DEST;
+      const player = lastResult.correct
+        ? correctPlayerRef.current
+        : wrongPlayerRef.current;
 
-        const player = new Tone.Player(soundUrl).toDestination();
-        await Tone.loaded();
+      if (!player || !player.loaded) return;
+
+      try {
+        player.stop();
         player.start();
       } catch (error) {
         console.error('Failed to play feedback sound:', error);
