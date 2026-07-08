@@ -18,11 +18,7 @@ import { useState } from 'react';
 /**
  * This component renders a grid of exercises to be displayed on the landing and dashboard page
  */
-export const ExerciseWidget = ({
-  columns,
-}: {
-  columns?: SimpleGridProps['columns'];
-}) => {
+export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
   const [exerciseType, setExerciseType] = useState<ExerciseType>(
     ExerciseType.Interval,
   );
@@ -35,15 +31,20 @@ export const ExerciseWidget = ({
 
   return (
     <>
-      <SimpleGrid columns={columns} h="full" w="full" gap={4}>
+      <SimpleGrid
+        h="full"
+        w="full"
+        gap={4}
+        {...props}
+      >
         {EXERCISE_TYPE_CONFIG.map(({ description, icon, title, type }) => (
           <ElevatedButton
             key={title}
             onClick={() => handleExerciseClick(type)}
             whiteSpace="normal"
-            minH="unset"
             h="auto"
             w="full"
+            minH={{ base: '100px', md: '224px' }}
             p={6}
           >
             {/* heading + description */}

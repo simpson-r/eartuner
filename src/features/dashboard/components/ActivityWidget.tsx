@@ -47,7 +47,12 @@ export const ActivityWidget = () => {
       {isLoadingStreak ? (
         <Card.LoadingState />
       ) : (
-        <Card.Content w="full" h="full" justify="space-between" gap={3}>
+        <Card.Content
+          w="full"
+          h="full"
+          justify={{ base: 'center', md: 'space-between' }}
+          gap={3}
+        >
           {!current && (
             <Text fontSize="sm">
               Complete an exercise every day to build your streak
@@ -74,8 +79,6 @@ export const ActivityWidget = () => {
             bgColor="bg.muted"
             w="full"
             p={3}
-            justify="strtch"
-            display={{ sm: 'none', md: 'flex' }}
           >
             {STREAK_STATS.map(({ label, key }, index) => (
               <Fragment key={key}>

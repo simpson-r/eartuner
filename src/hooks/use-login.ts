@@ -12,5 +12,5 @@ export const useLogin = (email: string) => {
     },
   });
 
-  return { isPending, isSuccess, login: mutate };
+  return { isPending, isSuccess, sendMagicLink: mutate };
 };

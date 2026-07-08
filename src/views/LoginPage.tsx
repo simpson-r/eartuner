@@ -9,10 +9,13 @@ import {
   Container,
   Field,
   Flex,
+  Heading,
+  HStack,
   Icon,
   Input,
   Link,
   Stack,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 
@@ -39,38 +42,42 @@ export const LoginPage = () => {
 
 const AuthForm = () => {
   const [email, setEmail] = useState('');
-  const { isPending, isSuccess, login } = useLogin(email);
+  const { isPending, isSuccess, sendMagicLink } = useLogin(email);
 
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (email) login();
+    (document.activeElement as HTMLElement | null)?.blur();
+    if (email) sendMagicLink();
   };
 
   if (isSuccess) {
     const { name, url } = getEmailProvider(email);
-    const header = (
-      <Flex textAlign="center" align="center" gap={2}>
-        Check your email <Icon as={MdCheckCircleOutline} color="fg.success" />
-      </Flex>
-    );
-    const description = (
-      <Box h="full">
-        {name && url && (
-          <Box>
-            A sign-in link has been sent to{' '}
-            <Link href={url} variant="underline" fontWeight="bold">
-              your {name} inbox
-            </Link>
-            .
-          </Box>
-        )}
-      </Box>
-    );
-
     return (
-      <Flex direction="column" align="center" h="1/3" w="full">
-        {header}
-        {description}
+      <Flex
+        w="full"
+        h="1/3"
+        direction="column"
+        align="center"
+        justify="center"
+        gap={2}
+      >
+        <HStack align="center">
+          <Heading fontSize={{ base: '2xl', md: '3xl' }} as="h1">
+            Check your email
+          </Heading>
+          <Icon as={MdCheckCircleOutline} boxSize="30px" color="fg.success" />
+        </HStack>
+
+        <Flex textAlign="center" w="full">
+          {name && url && (
+            <Box w="full">
+              A sign-in link has been sent to{' '}
+              <Link href={url} variant="underline" fontWeight="bold">
+                your {name} inbox.
+              </Link>
+            </Box>
+          )}
+        </Flex>
       </Flex>
     );
   }
@@ -91,6 +98,7 @@ const AuthForm = () => {
               onChange={(e) => setEmail(e.currentTarget.value)}
               placeholder="alice@gmail.com"
               type="email"
+              fontSize="16px"
               required
             />
           </Field.Root>
