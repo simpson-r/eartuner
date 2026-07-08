@@ -1,6 +1,6 @@
 'use client';
 
-import { Pie, PieChart, Sector, Tooltip } from 'recharts';
+import { Legend, Pie, PieChart, Sector, Tooltip } from 'recharts';
 
 import { Chart, useChart } from '@chakra-ui/charts';
 
@@ -34,7 +34,7 @@ export const StatsWidget = () => {
         return {
           name: EXERCISE_LABEL_CONFIG[breakdown.type].label,
           value: breakdown.attempts,
-          color: `${EXERCISE_LABEL_CONFIG[breakdown.type].color}.emphasized`,
+          color: `${EXERCISE_LABEL_CONFIG[breakdown.type].color}`,
         };
       }) ?? [],
   });
@@ -59,7 +59,7 @@ export const StatsWidget = () => {
               maxH={{ sm: 'full', md: '100px' }}
             >
               <PieChart responsive>
-                {/* <Legend align="center" content={<Chart.Legend />} /> */}
+                <Legend align="center" content={<Chart.Legend />} />
 
                 <Tooltip
                   cursor={false}

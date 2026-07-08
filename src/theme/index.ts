@@ -86,10 +86,21 @@ export const theme = defineConfig({
     tokens: {
       colors: {
         cobalt: {
-          50: { value: '#eff6ff' },
-          400: {value: '#5082EF'},
-          500: { value: '#2563eb' },
-          600: { value: '#1d4ed8' },
+          50: { value: '#F4F8FF' },
+          100: { value: '#E3EEFD' },
+          200: { value: '#C7DAFA' },
+          300: { value: '#9FBEF0' },
+          400: { value: '#6F98E2' },
+          500: { value: '#436CC8' },
+          600: { value: '#27479C' },
+          700: { value: '#18306D' },
+        },
+        gold: {
+          200: { value: '#FAF2C9' },
+          300: { value: '#F4E38D' },
+          400: { value: '#EFCF63' },
+          500: { value: '#EBCF57' },
+          600: { value: '#C88A2A' },
         },
       },
       fonts: {

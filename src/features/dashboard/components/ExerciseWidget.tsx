@@ -59,7 +59,7 @@ export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
                 <Text
                   fontSize="xs"
                   textAlign="center"
-                  color="gray.fg"
+                  color="fg.muted"
                   fontWeight="400"
                   minW="104px"
                   display={{ base: 'none', md: 'inline-flex' }}

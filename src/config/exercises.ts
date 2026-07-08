@@ -18,10 +18,10 @@ type Exercises = {
 };
 
 export const EXERCISE_LABEL_CONFIG = {
-  Interval: { label: 'Intervals', color: 'blue' },
-  Chord: { label: 'Chords', color: 'orange' },
-  Scale: { label: 'Scales', color: 'yellow' },
-  ScaleDegree: { label: 'Scale Degrees', color: 'green' },
+  Interval: { label: 'Intervals', color: 'cobalt.600' },
+  Chord: { label: 'Chords', color: 'cobalt.400' },
+  Scale: { label: 'Scales', color: 'cobalt.200' },
+  ScaleDegree: { label: 'Scale Degrees', color: 'cobalt.50' },
 };
 
 export const EXERCISE_TYPE_CONFIG: Exercises[] = [

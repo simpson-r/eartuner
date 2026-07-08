@@ -13,13 +13,14 @@ export const Circle = ({ active = false }: { active?: boolean }) => {
     <CircleChakra
       size={{ base: 10, md: '56px' }}
       border="2px solid"
-      borderColor={active ? 'blue.400' : 'border'}
+      borderColor={active ? 'cobalt.500' : 'border'}
+      bgColor={active ? 'cobalt.400' : undefined}
     >
       <Icon
         as={active ? HiMusicNote : HiOutlineMusicNote}
         position="relative"
         size="lg"
-        color={active ? 'fg' : 'border'}
+        color={active ? 'gold.300' : 'border'}
         css={active ? ICON_SHIMMER_SX : undefined}
       />
     </CircleChakra>

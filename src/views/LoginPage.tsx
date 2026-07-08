@@ -53,14 +53,7 @@ const AuthForm = () => {
   if (isSuccess) {
     const { name, url } = getEmailProvider(email);
     return (
-      <Flex
-        w="full"
-        h="1/3"
-        direction="column"
-        align="center"
-        justify="center"
-        gap={2}
-      >
+      <Flex w="full" h="1/3" direction="column" align="center" gap={2}>
         <HStack align="center">
           <Heading fontSize={{ base: '2xl', md: '3xl' }} as="h1">
             Check your email
@@ -71,10 +64,12 @@ const AuthForm = () => {
         <Flex textAlign="center" w="full">
           {name && url && (
             <Box w="full">
-              A sign-in link has been sent to{' '}
-              <Link href={url} variant="underline" fontWeight="bold">
-                your {name} inbox.
-              </Link>
+              <Text fontSize='sm'>
+                A sign-in link has been sent to{' '}
+                <Link href={url} variant="underline" fontWeight="bold">
+                  your {name} inbox.
+                </Link>
+              </Text>
             </Box>
           )}
         </Flex>
