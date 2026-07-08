@@ -87,6 +87,7 @@ export const theme = defineConfig({
       colors: {
         cobalt: {
           50: { value: '#eff6ff' },
+          400: {value: '#5082EF'},
           500: { value: '#2563eb' },
           600: { value: '#1d4ed8' },
         },

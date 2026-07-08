@@ -19,7 +19,7 @@ const pageCTA = {
 export const DashboardPage = () => {
   return (
     <Layout.PageContainer>
-      <Stack maxW="8/12" w="full" gap={8}>
+      <Stack maxW={{base: '9/12', sm: 'full', md: '9/12'}} w="full" gap={8}>
         <Layout.TitleBlock
           header={pageCTA.header}
           description={pageCTA.description}

@@ -1,4 +1,5 @@
 import {
+  Flex,
   Heading,
   Icon,
   SimpleGrid,
@@ -35,38 +36,39 @@ export const ExerciseWidget = ({
   return (
     <>
       <SimpleGrid columns={columns} h="full" w="full" gap={4}>
-        {EXERCISE_TYPE_CONFIG.map(
-          ({ description, icon, title, type }) => (
-            <ElevatedButton
-              key={title}
-              onClick={() => handleExerciseClick(type)}
-              whiteSpace="normal"
-              minH="unset"
-              h="auto"
-              w="full"
-              p={6}
-            >
-              {/* heading + description */}
-              <VStack align="start" h="full" w="full" gap={6}>
-                <Icon as={icon} boxSize={{ base: '48px', md: '60px' }} />
-                <VStack align="flex-start">
-                  <Heading fontSize={{ base: 'md', md: 'lg' }}>
-                    {title}
-                  </Heading>
-                  <Text
-                    fontSize="xs"
-                    textAlign="left"
-                    color="gray.fg"
-                    fontWeight="400"
-                    display={{ base: 'none', md: 'inline-flex' }}
-                  >
-                    {description}
-                  </Text>
-                </VStack>
+        {EXERCISE_TYPE_CONFIG.map(({ description, icon, title, type }) => (
+          <ElevatedButton
+            key={title}
+            onClick={() => handleExerciseClick(type)}
+            whiteSpace="normal"
+            minH="unset"
+            h="auto"
+            w="full"
+            p={6}
+          >
+            {/* heading + description */}
+            <VStack align="start" h="full" w="full" gap={4}>
+              <Icon
+                as={icon}
+                boxSize={{ base: '48px', md: '72px' }}
+                alignSelf="center"
+              />
+              <VStack align="center" w="full">
+                <Heading fontSize={{ base: 'md', md: 'xl' }}>{title}</Heading>
+                <Text
+                  fontSize="xs"
+                  textAlign="center"
+                  color="gray.fg"
+                  fontWeight="400"
+                  minW="104px"
+                  display={{ base: 'none', md: 'inline-flex' }}
+                >
+                  {description}
+                </Text>
               </VStack>
-            </ElevatedButton>
-          ),
-        )}
+            </VStack>
+          </ElevatedButton>
+        ))}
       </SimpleGrid>
       <NewExerciseModal
         exerciseType={exerciseType}

@@ -8,7 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 export const useLogin = (email: string) => {
   const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: () => {
-      return signIn('email', { email, redirect: false, callbackUrl: '/dashboard' });
+      return signIn('resend', { email, redirect: false, callbackUrl: '/' });
     },
   });
 

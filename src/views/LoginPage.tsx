@@ -49,7 +49,7 @@ const AuthForm = () => {
   if (isSuccess) {
     const { name, url } = getEmailProvider(email);
     const header = (
-      <Flex align="center" gap={2}>
+      <Flex textAlign="center" align="center" gap={2}>
         Check your email <Icon as={MdCheckCircleOutline} color="fg.success" />
       </Flex>
     );
@@ -68,12 +68,9 @@ const AuthForm = () => {
     );
 
     return (
-      <Flex h="1/3">
-        <Layout.TitleBlock
-          header={header}
-          description={description}
-          align="center"
-        />
+      <Flex direction="column" align="center" h="1/3" w="full">
+        {header}
+        {description}
       </Flex>
     );
   }
