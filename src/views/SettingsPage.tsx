@@ -107,7 +107,12 @@ export const SettingsPage = ({
 
   return (
     <Layout.PageContainer>
-      <Stack direction="column" maxW="1/2" w="full" gap={6}>
+      <Stack
+        direction="column"
+        maxW={{ base: '11/12', md: '684px' }}
+        w="full"
+        gap={6}
+      >
         {/* page title */}
         <Layout.TitleBlock
           header="Settings"
@@ -120,7 +125,7 @@ export const SettingsPage = ({
           border="2px solid"
           borderRadius="3xl"
           borderColor="border"
-          align="flex-end"
+          alignSelf="center"
           gap={10}
           p={6}
         >
@@ -134,6 +139,8 @@ export const SettingsPage = ({
               <Input
                 name="email"
                 value={user?.email ?? ''}
+                maxW="400px"
+                w='full'
                 _active={{ borderColor: 'border', border: '1px solid' }}
               />
             </Field.Root>
@@ -152,6 +159,7 @@ export const SettingsPage = ({
             <LeftAlignedSwitch
               label="Enable sound effects in lessons"
               color="fg"
+              size={{ base: 'sm', md: 'md' }}
               checked={preferences?.lessonSoundEffects}
               onCheckedChange={(e) =>
                 handlePrefChange('lessonSoundEffects', e.checked)
@@ -168,7 +176,7 @@ export const SettingsPage = ({
 
                 <Button
                   size="md"
-                  w="150px"
+                  w={{ base: '100px', md: '150px' }}
                   rounded="4xl"
                   variant="outline"
                   border="1.5px solid"

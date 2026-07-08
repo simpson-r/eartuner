@@ -53,9 +53,9 @@ export const LeftAlignedSegment = ({
   return (
     <Field.Root
       display="flex"
-      flexDirection={{ base: 'column', md: 'row' }}
+      flexDirection="row"
       justifyContent="space-between"
-      alignItems={{ base: 'flex-start', md: 'center' }}
+      alignItems="center"
       w="full"
       orientation="vertical"
       color="fg"
