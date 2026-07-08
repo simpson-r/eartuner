@@ -16,6 +16,7 @@ import { getAnswerFeedback } from '../utils';
 import { ElevatedButton } from '@/components/ElevatedButton';
 
 const ICON_SIZE = 12;
+const ICON_SIZE_SM = 10;
 
 export const PlayerFooter = ({
   answer,
@@ -48,22 +49,29 @@ export const PlayerFooter = ({
       h="full"
     >
       <HStack
-        w={{ base: '5/6', md: '1/2' }}
+        w={{ base: '11/12', md: '7/12' }}
         align="center"
         justify={finished ? 'center' : 'space-between'}
         gap={{ base: 12 }}
+        h="full"
       >
         {/* response feedback */}
         {!finished && (
-          <Stack direction="row" align="center" gap={4}>
+          <Stack direction="row" align="center" gap={3}>
             {correct ? (
-              <Icon as={CheckIcon} boxSize={ICON_SIZE} />
+              <Icon
+                as={CheckIcon}
+                boxSize={{ base: ICON_SIZE_SM, md: ICON_SIZE }}
+              />
             ) : (
-              <Icon as={CrossMarkIcon} boxSize={ICON_SIZE} />
+              <Icon
+                as={CrossMarkIcon}
+                boxSize={{ base: ICON_SIZE_SM, md: ICON_SIZE }}
+              />
             )}
             {/* feedback message */}
             <Stack direction="column" alignItems="flex-start" gap={0}>
-              <Heading size={{ base: 'lg', md: 'xl' }} fontWeight="bold">
+              <Heading size={{ base: 'md', md: 'xl' }} fontWeight="bold">
                 {feedback.heading}
               </Heading>
               <Text fontSize="xs" color="fg">

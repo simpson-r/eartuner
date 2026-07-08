@@ -49,7 +49,6 @@ export const PlayerPage = ({
   const answerLabel = answer ? labels[answer as keyof typeof labels] : null;
   const showFooter = answered || (finished && isLoggedIn);
 
-  
   /* HANDLERS */
   const handlePlayClick = () => playSound();
 
@@ -73,7 +72,14 @@ export const PlayerPage = ({
     <Grid
       minH="100dvh"
       w="full"
-      templateRows={{ base: 'auto 1fr auto', md: 'auto 1fr 96px' }}
+      templateRows={
+        finished
+          ? {
+              base: 'minmax(0, 1fr) auto',
+              md: !isLoggedIn ? 'minmax(0, 1fr) auto' : 'minmax(0, 1fr) 96px',
+            }
+          : { base: 'auto 1fr auto', md: 'auto 1fr 96px' }
+      }
     >
       {/* header */}
       {!finished && (
@@ -83,11 +89,7 @@ export const PlayerPage = ({
           totalQuestions={total}
         />
       )}
-      <Layout.PageContainer
-        overflowY="auto"
-        justify="center"
-        p={2}
-      >
+      <Layout.PageContainer overflowY="auto" justify="center" p={2}>
         {/* main area */}
         {!finished ? (
           <PlayerScreen
@@ -101,7 +103,7 @@ export const PlayerPage = ({
             handleResponseClick={handleResponseClick}
           />
         ) : (
-          <Center minH="100dvh">
+          <Center minH="100%">
             <CompletionScreen state={state} isLoggedIn={isLoggedIn} />
           </Center>
         )}
@@ -116,7 +118,7 @@ export const PlayerPage = ({
           pointerEvents: showFooter ? 'auto' : 'none',
         }}
         transition={{ duration: 0.18, ease: 'easeIn' }}
-        minH={answered ? '96px' : '0px'}
+        minH={answered || (finished && isLoggedIn) ? '96px' : '0px'}
       >
         {showFooter && (
           <PlayerFooter
