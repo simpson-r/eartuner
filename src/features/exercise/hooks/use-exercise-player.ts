@@ -3,7 +3,7 @@ import * as Tone from 'tone';
 import { ExerciseType } from '@prisma/client';
 
 import * as playback from '@/audio/playback';
-import { loadInstruments } from '@/audio/instruments';
+import { ensureAudioReady, loadInstruments } from '@/audio/instruments';
 import {
   EXERCISE_THEORY_CONFIG,
   chords,
@@ -243,6 +243,8 @@ export const useExercisePlayer = (
    */
   const playSound = async () => {
     if (!state.question || !instrument) return;
+
+    await ensureAudioReady();
     const { root, answer } = state.question;
 
     dispatch({ type: 'PLAY_SOUND', payload: true });

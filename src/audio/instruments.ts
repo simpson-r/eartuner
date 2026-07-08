@@ -6,6 +6,14 @@ import { Instrument } from '@prisma/client';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let samplerPromise: Promise<any> | null = null;
 
+export const ensureAudioReady = async () => {
+  const audioContext = Tone.getContext();
+  if (audioContext.state !== 'running') {
+    await Tone.start();
+    await audioContext.resume();
+  }
+};
+
 export async function loadInstruments(instrument: Instrument) {
   const { base, urls } = samples[instrument];
 
