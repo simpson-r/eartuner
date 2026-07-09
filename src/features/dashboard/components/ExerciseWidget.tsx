@@ -31,12 +31,7 @@ export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
 
   return (
     <>
-      <SimpleGrid
-        h="full"
-        w="full"
-        gap={4}
-        {...props}
-      >
+      <SimpleGrid h="full" w="full" gap={4} {...props}>
         {EXERCISE_TYPE_CONFIG.map(({ description, icon, title, type }) => (
           <ElevatedButton
             key={title}
@@ -44,7 +39,7 @@ export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
             whiteSpace="normal"
             h="auto"
             w="full"
-            minH={{ base: '100px', md: '224px' }}
+            minH={{ base: '120px', md: '224px' }}
             p={6}
           >
             {/* heading + description */}
@@ -55,7 +50,13 @@ export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
                 alignSelf="center"
               />
               <VStack align="center" w="full">
-                <Heading fontSize={{ base: 'md', md: 'xl' }}>{title}</Heading>
+                <Heading
+                  fontSize={{ base: 'sm', md: 'xl' }}
+                  minH={{ base: '36px', md: 'unset' }}
+                  lineHeight="1.2"
+                >
+                  {title}
+                </Heading>
                 <Text
                   fontSize="xs"
                   textAlign="center"
