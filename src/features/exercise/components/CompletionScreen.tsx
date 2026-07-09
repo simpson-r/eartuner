@@ -28,9 +28,11 @@ const HERO_ICON_SIZE_SM = 180;
  */
 export const CompletionScreen = ({
   state,
+  duration,
   isLoggedIn,
 }: {
   state: ExercisePlayerState;
+  duration: number,
   isLoggedIn: boolean;
 }) => {
   const router = useRouter();
@@ -43,7 +45,7 @@ export const CompletionScreen = ({
     return [
       { label: 'Score', value: `${roundedScore}%` },
       { label: 'Questions', value: state.total },
-      { label: 'Time', value: formatDuration(state.duration || 0) },
+      { label: 'Time', value: formatDuration(duration || 0) },
     ];
   }, [score, state]);
 
@@ -80,7 +82,7 @@ export const CompletionScreen = ({
 
       {/* stats */}
       <HStack
-        w="7/12"
+        maxW='300px'
         align="center"
         gap={2}
         justifyContent={{ base: 'center', md: 'space-between' }}

@@ -32,8 +32,8 @@ export interface ExercisePlayerState {
   question?: Question;
   finished: boolean;
   playing: boolean;
-  duration: number;
   meta: ExerciseMetadata[];
+  endTime?: number;
 }
 
 type Action =
@@ -42,7 +42,7 @@ type Action =
   | { type: 'NEXT' }
   | { type: 'PLAY_SOUND'; payload: boolean }
   | { type: 'RESET'; payload: { total: number } }
-  | { type: 'END_EXERCISE'; payload: { duration: number } };
+  | { type: 'END_EXERCISE' };
 
 const CORRECT_DEST = '/sounds/correct.mp3';
 const WRONG_DEST = '/sounds/wrong.mp3';
@@ -54,7 +54,6 @@ const initialState: ExercisePlayerState = {
   question: undefined,
   finished: false,
   playing: false,
-  duration: 0,
   meta: [],
 };
 
@@ -84,6 +83,7 @@ export function reducer(
         ],
         correct: state.correct + (isCorrect ? 1 : 0),
         question: { ...q, selected },
+        endTime: state.index + 1 === state.total ? Date.now() : undefined,
       };
     }
     case 'NEXT':
@@ -107,7 +107,6 @@ export function reducer(
         ...state,
         question: undefined,
         finished: true,
-        duration: action.payload.duration,
       };
     default:
       return state;
@@ -134,6 +133,7 @@ export const useExercisePlayer = (
   const { generateQuestion } = useQuestionGenerator(items);
   const { create, newAttempt } = useHistory();
 
+  const startedAtRef = useRef(Date.now());
   const durationRef = useRef(0);
   const hasPostedAttempt = useRef(false);
   const correctPlayerRef = useRef<Tone.Player | null>(null);
@@ -147,15 +147,33 @@ export const useExercisePlayer = (
   /**
    * EFFECTS
    */
-
-  // load next question
+  // audio context initialization
   useEffect(() => {
-    if (!state.question && !state.finished) {
-      dispatch({ type: 'LOAD_QUESTION', payload: generateQuestion() });
-    }
-  }, [generateQuestion, state.question, state.finished]);
+    const resume = async () => {
+      await Tone.start();
+      cleanup();
+    };
 
-  // load feedback sound players
+    const cleanup = () => {
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+
+    const initAudio = async () => {
+      window.addEventListener('pointerdown', resume);
+      window.addEventListener('keydown', resume);
+
+      const loadedInstrument = await loadInstruments(
+        preferences?.defaultInstrument || 'Piano',
+      );
+      setInstrument(loadedInstrument);
+    };
+
+    initAudio();
+    return cleanup;
+  }, [preferences?.defaultInstrument]);
+
+  // feedback sound players initialization
   useEffect(() => {
     correctPlayerRef.current = new Tone.Player(CORRECT_DEST).toDestination();
     wrongPlayerRef.current = new Tone.Player(WRONG_DEST).toDestination();
@@ -165,6 +183,13 @@ export const useExercisePlayer = (
       wrongPlayerRef.current?.dispose();
     };
   }, [preferences?.lessonSoundEffects]);
+
+  // load next question
+  useEffect(() => {
+    if (!state.question && !state.finished) {
+      dispatch({ type: 'LOAD_QUESTION', payload: generateQuestion() });
+    }
+  }, [generateQuestion, state.question, state.finished]);
 
   // play feedback sounds
   useEffect(() => {
@@ -194,20 +219,19 @@ export const useExercisePlayer = (
 
   // save results on exercise completion
   useEffect(() => {
-    const saveExercise = async () => {
-      await create({
-        exerciseType: type,
-        numQuestions: state.total,
-        score: (state.correct / state.total) * 100,
-        durationSec: durationRef.current,
-        meta: state.meta,
-      });
-    };
+    if (!state.finished || !isLoggedIn || hasPostedAttempt.current) return;
 
-    if (state.finished && isLoggedIn && !hasPostedAttempt.current) {
-      hasPostedAttempt.current = true;
-      saveExercise();
-    }
+    durationRef.current = Math.round(
+      ((state?.endTime || 0) - startedAtRef.current) / 1000,
+    );
+
+    create({
+      exerciseType: type,
+      numQuestions: state.total,
+      score: (state.correct / state.total) * 100,
+      durationSec: durationRef.current,
+      meta: state.meta,
+    });
   }, [
     state.finished,
     isLoggedIn,
@@ -217,43 +241,6 @@ export const useExercisePlayer = (
     type,
     create,
   ]);
-
-  // timer
-  useEffect(() => {
-    if (state.finished) return;
-
-    const timer = setInterval(() => {
-      durationRef.current += 1;
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [state.finished]);
-
-  // audio context initialization
-  useEffect(() => {
-    const resume = async () => {
-      await Tone.start();
-      cleanup();
-    };
-
-    const cleanup = () => {
-      window.removeEventListener('pointerdown', resume);
-      window.removeEventListener('keydown', resume);
-    };
-
-    const initAudio = async () => {
-      window.addEventListener('pointerdown', resume);
-      window.addEventListener('keydown', resume);
-
-      const loadedInstrument = await loadInstruments(
-        preferences?.defaultInstrument || 'Piano',
-      );
-      setInstrument(loadedInstrument);
-    };
-
-    initAudio();
-    return cleanup;
-  }, [preferences?.defaultInstrument]);
 
   /**
    * ACTIONS
@@ -303,8 +290,6 @@ export const useExercisePlayer = (
       dispatch({ type: 'PLAY_SOUND', payload: false });
     }
   };
-
-  console.log({ playing: state.playing, instrument });
 
   /**
    * DERIVED VARIABLES

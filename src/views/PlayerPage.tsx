@@ -60,11 +60,7 @@ export const PlayerPage = ({
       router.push(isLoggedIn ? '/dashboard' : '/');
     } else {
       const hasNext = index + 1 < total;
-      dispatch(
-        hasNext
-          ? { type: 'NEXT' }
-          : { type: 'END_EXERCISE', payload: { duration } },
-      );
+      dispatch(hasNext ? { type: 'NEXT' } : { type: 'END_EXERCISE' });
     }
   };
 
@@ -104,7 +100,11 @@ export const PlayerPage = ({
           />
         ) : (
           <Center minH="100%">
-            <CompletionScreen state={state} isLoggedIn={isLoggedIn} />
+            <CompletionScreen
+              duration={duration}
+              state={state}
+              isLoggedIn={isLoggedIn}
+            />
           </Center>
         )}
       </Layout.PageContainer>
