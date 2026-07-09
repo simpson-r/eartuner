@@ -2,7 +2,7 @@
 
 import * as Tone from 'tone';
 import { chords, intervals, scaleDegrees, scales } from '@/config/theory';
-import { shuffle } from '@/utils/utils';
+import { shuffle } from '../../utils';
 import { ChordInversion, PlaybackDirection } from '@/features/exercise/types';
 import { Sampler } from 'tone';
 

@@ -4,7 +4,7 @@ import {
   DEFAULT_QUESTION_COUNT,
   QUESTION_MAX,
   QUESTION_MIN,
-} from '@/utils/constants';
+} from '../../constants';
 import { chords, intervals, scaleDegrees, scales } from './theory';
 
 const CHORD_PLAYBACKS = ['root', 'first', 'second', 'third'] as const;

@@ -8,7 +8,7 @@ import { ExerciseType } from '@prisma/client';
 import { ExerciseConfig } from '@/features/exercise/types';
 import { ExerciseForm } from './ExerciseForm';
 import { HiX } from 'react-icons/hi';
-import { EXERCISE_NAME_MAP } from '@/utils/constants';
+import { EXERCISE_NAME_MAP } from '../../../../constants';
 
 const getModalCTA = (exerciseType: ExerciseType) => {
   return {

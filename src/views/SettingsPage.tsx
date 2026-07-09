@@ -22,7 +22,7 @@ import { toaster } from '@/components/ui/toaster';
 import { useHistory } from '@/hooks/use-history';
 import { ClientPreferences } from '@/features/exercise/types';
 import { usePreferences } from '@/hooks/use-preferences';
-import { useUser } from '@/hooks/use-user';
+import { useMe } from '@/hooks/use-me';
 import {
   LeftAlignedSegment,
   LeftAlignedSwitch,
@@ -56,7 +56,7 @@ export const SettingsPage = ({
 }) => {
   const [action, setAction] = useState<AccountAction>('reset');
   const { resetHistory, isResetting } = useHistory();
-  const { deleteAccount, isDeletingAccount } = useUser();
+  const { deleteAccount, isDeletingAccount } = useMe();
   const { updatePreferences, preferences } = usePreferences();
   const hasPatchedPref = useRef(false);
 

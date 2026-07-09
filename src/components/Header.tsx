@@ -22,7 +22,7 @@ const PROFILE_MENU_ITEMS = createListCollection({
   items: [
     { label: 'Settings', value: 'settings', icon: HiOutlineCog, divider: true },
     {
-      label: 'Color mode',
+      label: 'Theme',
       value: 'color-mode',
       icon: ColorModeIcon,
       divider: true,

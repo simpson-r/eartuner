@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { shuffle } from '@/utils/utils';
+import { shuffle } from '../../../../utils';
 import { Question } from '@/features/exercise/types';
 
 const MIN_MIDI = 48; // C3

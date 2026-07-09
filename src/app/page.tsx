@@ -1,4 +1,4 @@
-import { HomePage } from '@/views/HomePage';
+import { LandingPage } from '@/views/LandingPage';
 
 import { redirect } from 'next/navigation';
 
@@ -14,7 +14,7 @@ const Home = async () => {
 
   return (
     <Layout session={guestSession}>
-      <HomePage />
+      <LandingPage />
     </Layout>
   );
 };

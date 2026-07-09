@@ -1,6 +1,6 @@
 'use client';
 
-import { randomItem } from '@/utils/utils';
+import { randomItem } from '../../../utils';
 
 const SUCCESS_HEADINGS = [
   'Awesome!',

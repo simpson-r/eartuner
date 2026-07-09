@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { auth } from '@/auth/auth';
 import db from '@/db/client';
-import { daysBetween } from '@/utils/utils';
+import { daysBetween } from '../../../../../utils';
 
 /**
  * GET /api/me/stats

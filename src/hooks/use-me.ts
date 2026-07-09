@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 /**
  * Hook to fetch data for a specific user.
  */
-export const useUser = () => {
+export const useMe = () => {
   // DELETE - Delete authenticated user's account and all associated data
   const deleteAccount = useMutation({
     mutationFn: () => axios.delete('/api/me'),

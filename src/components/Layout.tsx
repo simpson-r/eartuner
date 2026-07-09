@@ -12,6 +12,7 @@ import {
 
 import Header from '@/components/Header';
 import { Toaster } from '@/components/ui/toaster';
+import Footer from './Footer';
 
 type BaseLayoutProps = React.PropsWithChildren<{
   session: Session | null;
@@ -32,6 +33,7 @@ export const Layout = ({ children, session }: BaseLayoutProps) => {
         {children}
       </Flex>
       <Toaster />
+      <Footer />
     </Flex>
   );
 };
@@ -77,7 +79,7 @@ export const TitleBlock = ({
 );
 
 export const PageContainer = (props: StackProps) => (
-  <VStack w="full" flex="1" mx="auto" p={10} {...props} />
+  <VStack w="full" flex="1" mx="auto" p={12} {...props} />
 );
 
 Layout.TitleBlock = TitleBlock;
