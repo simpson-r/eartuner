@@ -2,6 +2,7 @@ import { Session } from 'next-auth';
 import React from 'react';
 
 import {
+  Container,
   Flex,
   Heading,
   Stack,
@@ -64,7 +65,7 @@ export const TitleBlock = ({
 }: PageHeaderProps) => (
   <Stack gap={2} {...props}>
     {typeof header === 'string' ? (
-      <Heading fontSize='3xl' as="h1">
+      <Heading fontSize="3xl" as="h1">
         {header}
       </Heading>
     ) : (
@@ -79,7 +80,7 @@ export const TitleBlock = ({
 );
 
 export const PageContainer = (props: StackProps) => (
-  <VStack w="full" flex="1" mx="auto" p={12} {...props} />
+  <Container as={VStack} maxW="4xl" py={{ base: 10, md: 12 }} {...props} />
 );
 
 Layout.TitleBlock = TitleBlock;

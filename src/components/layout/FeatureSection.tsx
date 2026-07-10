@@ -16,7 +16,7 @@ const FEATURE_CARDS = [
   {
     heading: 'Four Exercise Types',
     description:
-      'Practice intervals, chords, scales, and scale degrees with configurable question sets.',
+      'Practice intervals, chords, scales, and scale degrees using configurable question sets.',
     icon: AudioBarsIcon,
     key: 'types',
   },
@@ -29,7 +29,7 @@ const FEATURE_CARDS = [
   {
     heading: 'Track Your Progress',
     description:
-      'Create a free account to save attempts, build streaks, and monitor improvement over time.',
+      'Create an account to save attempts, build streaks, and monitor improvement over time.',
     icon: GraphIcon,
     key: 'progress',
   },
@@ -46,7 +46,7 @@ export const FeatureSection = () => {
 
           <SimpleGrid
             columns={{ base: 1, md: 3 }}
-            gap={{ base: 4, md: 8 }}
+            gap={{ base: 4, md: 6 }}
             w="full"
           >
             {FEATURE_CARDS.map(({ description, key, heading, icon }) => (
@@ -56,12 +56,12 @@ export const FeatureSection = () => {
                 align="center"
                 justify="center"
                 height="full"
-                maxW="330px"
+                maxW="320px"
               >
                 <Icon
                   as={icon}
                   boxSize={{ base: 12, md: 16 }}
-                  mb={{ base: 4, md: 6 }}
+                  mb={2}
                 />
 
                 <Card.Header

@@ -1,5 +1,5 @@
-import { Fragment, useMemo } from 'react';
-import { Text, Stack, HStack, Separator, Box } from '@chakra-ui/react';
+import { useMemo } from 'react';
+import { Text, Stack, HStack, Box } from '@chakra-ui/react';
 import { Card } from '@/components/Card';
 import { Streak } from './ActivityWidget.style';
 import { Stat } from '@/components/Stat';
@@ -41,8 +41,8 @@ export const ActivityWidget = () => {
   }, [current, streak?.hasCompletedToday]);
 
   return (
-    <Card minH={{ base: 'auto', md: '12rem' }}>
-      <Card.Header fontSize="lg" fontWeight="bold">
+    <Card>
+      <Card.Header fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
         Streak
       </Card.Header>
       {isLoadingMeStats ? (
@@ -50,25 +50,14 @@ export const ActivityWidget = () => {
       ) : (
         <Card.Content
           w="full"
-          h={{ base: 'auto', md: 'full' }}
-          justify={{ base: 'center', md: 'space-around' }}
-          gap={{ base: 2, sm: 0, md: 4 }}
+          h="full"
+          gap={7}
         >
-          <Text
-            fontSize={{ base: 'xs', md: 'sm' }}
-            display={{ base: 'inline-flex', sm: 'none', md: 'inline-flex' }}
-            textAlign="center"
-          >
+          <Text fontSize={{ base: 'xs', sm: 'sm' }} textAlign="center">
             Complete daily exercises to build your streak
           </Text>
 
-          <HStack
-            align="center"
-            w="full"
-            maxW="fit-content"
-            mx="auto"
-            display={{ base: 'inline-flex', sm: 'none', md: 'inline-flex' }}
-          >
+          <HStack align="center" w="full" maxW="fit-content" mx="auto">
             {visibleDays.map((day, index) => (
               <Stack key={`${day.label}-${index}`} align="center" gap={1}>
                 <Streak.Circle active={day.active} />
@@ -83,30 +72,8 @@ export const ActivityWidget = () => {
             ))}
           </HStack>
 
-          <Box minH="60px">
-            <HStack borderRadius="md" bgColor="bg.muted" w="full" p={3}>
-              {STREAK_STATS.map(({ label, key }, index) => (
-                <Fragment key={key}>
-                  {index > 0 && (
-                    <Separator
-                      orientation="vertical"
-                      height="32px"
-                      borderColor="border"
-                    />
-                  )}
-                  <Stat
-                    key={key}
-                    label={label}
-                    value={streak[key] as number | string}
-                    justify="center"
-                    align="center"
-                    fontSize="xs"
-                    flex={1}
-                    gap={0}
-                  />
-                </Fragment>
-              ))}
-            </HStack>
+          <Box minH="60px"  mt="auto" w="full">
+            <Stat.Row items={STREAK_STATS} stats={streak} />
           </Box>
         </Card.Content>
       )}

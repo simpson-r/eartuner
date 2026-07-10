@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import {
   Bar,
   BarChart as RechartsBarChart,
@@ -13,15 +13,14 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Chart, useChart } from '@chakra-ui/charts';
 
+import { Chart, useChart } from '@chakra-ui/charts';
 import {
   Box,
   createListCollection,
-  HStack,
-  Separator,
   Stack,
   Text,
+  useBreakpointValue,
   VStack,
 } from '@chakra-ui/react';
 import { ExerciseType } from '@prisma/client';
@@ -30,13 +29,12 @@ import { Card } from '@/components/Card';
 import { Stat } from '@/components/Stat';
 import { Dropdown } from '@/components/ui/dropdown';
 import { EXERCISE_LABEL_CONFIG } from '@/config/exercises';
-
 import { MeStatsResponse, useMeStats } from '@/hooks/use-me-stats';
+import { formatScore } from '@/features/exercise/utils';
 import { SelectedBreakdownType } from '../types';
 import { buildBreakdownMap, getChartRows } from '../utils';
-import { formatScore } from '@/features/exercise/utils';
 
-const CHART_HEIGHT = 140;
+const CHART_HEIGHT = 120;
 const STATS_SECTIONS: {
   label: string;
   key: keyof MeStatsResponse['summary'];
@@ -64,12 +62,12 @@ export const StatsWidget = () => {
   const { stats, questionAccuracyByType, isLoadingMeStats } = useMeStats();
   const [selectedType, setSelectedType] =
     useState<SelectedBreakdownType>('All');
+  const hideLabels = useBreakpointValue({ base: true, md: false });
 
   /**
    * DERIVED VARS
    */
   const breakdownMap = buildBreakdownMap(stats?.breakdownByType);
-
   const summaryStats =
     selectedType === 'All' ? stats?.summary : breakdownMap[selectedType];
   const showEmptyState = !stats?.breakdownByType.length;
@@ -105,22 +103,24 @@ export const StatsWidget = () => {
   return (
     <Card>
       <Stack
-        direction={{ base: 'column', sm: 'row' }}
+        direction={{ base: 'column', md: 'row' }}
         justify="space-between"
         align={{ base: 'flex-start', md: 'center' }}
       >
-        <Card.Header fontSize="lg" fontWeight="bold">
+        <Card.Header fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
           Your progress
         </Card.Header>
-        <Dropdown
-          collection={filteredCollection}
-          value={[selectedType]}
-          onValueChange={(event) =>
-            setSelectedType(event.value[0] as SelectedBreakdownType)
-          }
-          size="xs"
-          maxW={28}
-        />
+        {hasStats && (
+          <Dropdown
+            collection={filteredCollection}
+            value={[selectedType]}
+            onValueChange={(event) =>
+              setSelectedType(event.value[0] as SelectedBreakdownType)
+            }
+            size="xs"
+            maxW={32}
+          />
+        )}
       </Stack>
 
       {isLoadingMeStats && <Card.LoadingState />}
@@ -128,7 +128,12 @@ export const StatsWidget = () => {
       {!isLoadingMeStats && stats && (
         <VStack h="full">
           {showEmptyState && (
-            <Text fontSize="sm" h="140px" alignContent="center">
+            <Text
+              h="140px"
+              alignContent="center"
+              textAlign="center"
+              fontSize={{ base: 'xs', md: 'sm' }}
+            >
               Complete your first exercise to unlock your progress
             </Text>
           )}
@@ -139,7 +144,7 @@ export const StatsWidget = () => {
               <Chart.Root chart={barChart} aspectRatio="unset">
                 <RechartsBarChart
                   data={barChart.data}
-                  margin={{ top: 8, right: 0, bottom: 0, left: 0 }}
+                  margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                   height={CHART_HEIGHT}
                   responsive
                 >
@@ -151,6 +156,11 @@ export const StatsWidget = () => {
                     dataKey={'expected'}
                     axisLine={false}
                     tickLine={false}
+                    interval={0}
+                    tickFormatter={(value) =>
+                      value.length > 5 ? `${value.slice(0, 4)}.` : value
+                    }
+                    hide={hideLabels}
                   />
                   <YAxis
                     width={40}
@@ -158,6 +168,7 @@ export const StatsWidget = () => {
                     tickLine={false}
                     domain={[0, 100]}
                     tickFormatter={(value) => `${formatScore(value)}%`}
+                    hide={hideLabels}
                   />
 
                   <Tooltip
@@ -171,6 +182,7 @@ export const StatsWidget = () => {
                       key={item.name}
                       dataKey={barChart.key('accuracy')}
                       fill={barChart.color(item.color)}
+                      isAnimationActive={false}
                       barSize={12}
                       radius={4}
                     />
@@ -183,7 +195,9 @@ export const StatsWidget = () => {
             {hasStats && selectedType === 'All' && (
               <Chart.Root chart={pieChart} aspectRatio="unset">
                 <RechartsPieChart height={CHART_HEIGHT} responsive>
-                  <Legend align="center" content={<Chart.Legend />} />
+                  {hideLabels ? null : (
+                    <Legend align="center" content={<Chart.Legend />} />
+                  )}
 
                   <Tooltip
                     cursor={false}
@@ -210,39 +224,7 @@ export const StatsWidget = () => {
           </Box>
 
           {/* stats summary */}
-          <HStack
-            justify="space-between"
-            bgColor="bg.muted"
-            borderRadius="md"
-            w="full"
-            display={{ base: 'none', md: 'flex' }}
-            p={3}
-          >
-            {STATS_SECTIONS.map(({ label, key }, index) => (
-              <Fragment key={key}>
-                {index > 0 && (
-                  <Separator
-                    orientation="vertical"
-                    height="32px"
-                    borderColor="border"
-                    pt={{ base: '8px' }}
-                  />
-                )}
-                <Stat
-                  key={key}
-                  label={label}
-                  fontSize="xs"
-                  justify="center"
-                  align="center"
-                  gap={0}
-                  flex={1}
-                  value={
-                    summaryStats?.[key as 'attempts' | 'averageScore'] || '--'
-                  }
-                />
-              </Fragment>
-            ))}
-          </HStack>
+          <Stat.Row items={STATS_SECTIONS} stats={summaryStats} mt="auto"/>
         </VStack>
       )}
     </Card>

@@ -64,7 +64,7 @@ const AuthForm = () => {
         <Flex textAlign="center" w="full">
           {name && url && (
             <Box w="full">
-              <Text fontSize='sm'>
+              <Text fontSize="sm">
                 A sign-in link has been sent to{' '}
                 <Link href={url} variant="underline" fontWeight="bold">
                   your {name} inbox.
@@ -93,6 +93,8 @@ const AuthForm = () => {
               onChange={(e) => setEmail(e.currentTarget.value)}
               placeholder="alice@gmail.com"
               type="email"
+              name="email"
+              autoComplete="email"
               fontSize="16px"
               required
             />

@@ -15,7 +15,7 @@ const cta = {
  */
 export const LandingPage = () => {
   return (
-    <Layout.PageContainer>
+    <Layout.PageContainer maxW='5xl'>
       <VStack gap={{ base: 8, md: 12 }}>
         {/* heading */}
         <Layout.TitleBlock

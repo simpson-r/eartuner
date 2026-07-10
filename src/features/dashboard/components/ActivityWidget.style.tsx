@@ -11,7 +11,7 @@ import { ICON_SHIMMER_SX } from '@/components/style';
 export const Circle = ({ active = false }: { active?: boolean }) => {
   return (
     <CircleChakra
-      size={{ base: '40px', md: '56px' }}
+      size={{ base: '34px', md: '56px' }}
       border="2px solid"
       borderColor={active ? 'cobalt.500' : 'border'}
       bgColor={active ? 'cobalt.400' : undefined}
@@ -19,7 +19,7 @@ export const Circle = ({ active = false }: { active?: boolean }) => {
       <Icon
         as={active ? HiMusicNote : HiOutlineMusicNote}
         position="relative"
-        size="lg"
+        size={{ base: 'md', md: 'lg' }}
         color={active ? 'gold.500' : 'border'}
         css={active ? ICON_SHIMMER_SX : undefined}
       />
