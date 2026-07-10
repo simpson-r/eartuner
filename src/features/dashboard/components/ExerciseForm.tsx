@@ -112,10 +112,11 @@ export const ExerciseForm = ({
     return (
       <Dropdown
         collection={finalCollection}
+        size="sm"
         label={config.label}
-        value={value || config.defaultValue}
-        onValueChange={(value) =>
-          updateSetting(config.key as keyof ExerciseFormState, value)
+        value={[value || config.defaultValue]}
+        onValueChange={(e) =>
+          updateSetting(config.key as keyof ExerciseFormState, e.value[0])
         }
       />
     );

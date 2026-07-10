@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { ExerciseType } from '@prisma/client';
 import { useMemo } from 'react';
+import { AccuracyMapResult } from '@/app/api/me/stats/types';
 
 export type BreakdownByType = {
   type: ExerciseType;
@@ -22,12 +23,13 @@ export interface StreakData {
 export interface MeStatsResponse {
   summary: {
     averageScore: number;
-    totalAttempts: number;
-    totalQuestions: number;
-    totalDuration: number;
+    attempts: number;
+    questions: number;
+    duration: number;
   };
   breakdownByType: BreakdownByType[];
   streak: StreakData;
+  questionAccuracyByType: AccuracyMapResult;
 }
 
 /**
@@ -71,5 +73,6 @@ export const useMeStats = () => {
       : undefined,
     streak,
     isLoadingMeStats,
+    questionAccuracyByType: data?.questionAccuracyByType,
   };
 };

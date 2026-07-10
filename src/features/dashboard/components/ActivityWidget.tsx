@@ -42,7 +42,7 @@ export const ActivityWidget = () => {
 
   return (
     <Card>
-      <Card.Header fontSize="md" fontWeight="bold">
+      <Card.Header fontSize="lg" fontWeight="bold">
         Streak
       </Card.Header>
       {isLoadingMeStats ? (
@@ -53,11 +53,9 @@ export const ActivityWidget = () => {
           h="full"
           justify={{ base: 'center', md: 'space-around' }}
         >
-          {!current && (
-            <Text fontSize="sm">
-              Complete an exercise every day to build your streak
-            </Text>
-          )}
+          <Text fontSize={{ base: 'xs', md: 'sm' }} textAlign="center">
+            Complete an exercise every day to build your streak
+          </Text>
 
           <HStack
             w="full"

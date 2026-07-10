@@ -82,3 +82,14 @@ export const formatDuration = (sec: number | null) => {
     .toISOString()
     .slice(hrs > 0 ? hStart : mins > 10 ? mStart : mStart + 1, 19);
 };
+
+/**
+ * Formats a score as a number with at most two decimcal points
+ *
+ * Examples:
+ *  - 92.3333    ->  92.33
+ *  - 3.1415926  -> 3.14
+ *
+ * @param score
+ */
+export const formatScore = (score: number) => Math.round(score * 100) / 100;

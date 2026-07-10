@@ -2,6 +2,9 @@ import { createListCollection } from '@chakra-ui/react';
 import { ExerciseType } from '@prisma/client';
 
 import { CollectionConfig } from '@/features/exercise/types';
+import { BreakdownByType, MeStatsResponse } from '@/hooks/use-me-stats';
+import { BreakdownMap, SelectedBreakdownType } from './types';
+import { formatScore } from '../exercise/utils';
 
 /**
  * COLLECTIONS BY EXERCISE TYPE
@@ -142,4 +145,31 @@ export const exerciseConfigs: Record<ExerciseType, ExerciseConfig> = {
       help: 'Choose the scale degrees you want to identify by ear.',
     },
   },
+};
+
+/**
+ * CHART UI HELPERS
+ */
+export const buildBreakdownMap = (
+  breakdownByType: BreakdownByType[] = [],
+): BreakdownMap => {
+  return breakdownByType.reduce<BreakdownMap>((acc, breakdown) => {
+    acc[breakdown.type] = {
+      attempts: breakdown.attempts,
+      averageScore: `${formatScore(breakdown.averageScore)}%`,
+    };
+
+    return acc;
+  }, {});
+};
+
+export const getChartRows = (
+  questionAccuracyByType: MeStatsResponse['questionAccuracyByType'] | undefined,
+  selectedType: SelectedBreakdownType,
+) => {
+  if (selectedType === 'All') return [];
+
+  return [...(questionAccuracyByType?.[selectedType] ?? [])].sort(
+    (a, b) => a.accuracy - b.accuracy,
+  );
 };

@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 
 import { auth } from '@/auth/auth';
 import db from '@/db/client';
+
 import { daysBetween } from '../../../../../utils';
+import { buildAccuracyByExerciseType } from './util';
 
 /**
  * GET /api/me/stats
@@ -21,7 +23,8 @@ export async function GET() {
   }
   const userId = session.user.id;
 
-  const [summaryAgg, breakdownAgg, streak] = await Promise.all([
+  // db queries for aggregates, exercise, and streak data
+  const [summaryAgg, breakdownAgg, exercises, streak] = await Promise.all([
     db.exercise.aggregate({
       where: { userId },
       _count: { id: true },
@@ -36,24 +39,36 @@ export async function GET() {
       _sum: { numQuestions: true },
       _avg: { score: true },
     }),
-
+    db.exercise.findMany({
+      where: { userId },
+      select: {
+        exerciseType: true,
+        meta: true,
+      },
+    }),
     db.streak.findUnique({ where: { userId } }),
   ]);
 
+
   const summary = {
     averageScore: summaryAgg._avg.score?.toFixed(2) ?? 0,
-    totalAttempts: summaryAgg._count.id,
-    totalQuestions: summaryAgg._sum.numQuestions ?? 0,
-    totalDuration: summaryAgg._sum.durationSec ?? 0,
+    attempts: summaryAgg._count.id,
+    questions: summaryAgg._sum.numQuestions ?? 0,
+    duration: summaryAgg._sum.durationSec ?? 0,
   };
 
   const breakdownByType = breakdownAgg.map((group) => ({
     type: group.exerciseType,
+    averageScore: group._avg.score ?? 0,
     questions: group._sum.numQuestions ?? 0,
     attempts: group._count.id,
-    averageScore: group._avg.score ?? 0,
   }));
 
+
+  const questionAccuracyByType = buildAccuracyByExerciseType(exercises);
+
+
+  // derived values for streak data
   const today = new Date();
   const delta = streak?.lastDate ? daysBetween(streak.lastDate, today) : null;
   const current = (delta ?? 0) > 1 ? 0 : streak?.current;
@@ -80,5 +95,9 @@ export async function GET() {
     summary,
     breakdownByType,
     streak: streakData,
+    questionAccuracyByType,
   });
 }
+
+
+

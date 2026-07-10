@@ -1,32 +1,21 @@
-import { ListCollection, Select } from '@chakra-ui/react';
+import { Select, SelectRootProps } from '@chakra-ui/react';
 
 /**
  * This component renders a reusable dropdown using Chakra's "Select" primitive.
  */
 export const Dropdown = ({
-  collection,
   label,
   placeholder,
-  size = 'sm',
-  value,
-  onValueChange,
+  collection,
+  ...props
 }: {
-  collection: ListCollection;
-  label: string;
+  label?: string;
   placeholder?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xs';
-  value: string;
-  onValueChange: (val: string) => void;
-}) => {
+} & SelectRootProps) => {
   return (
-    <Select.Root
-      size={size}
-      collection={collection}
-      value={[value]}
-      onValueChange={(e) => onValueChange(e.value[0])}
-    >
+    <Select.Root collection={collection} {...props}>
       <Select.HiddenSelect />
-      <Select.Label as="h2">{label}</Select.Label>
+      {label && <Select.Label as="h2">{label}</Select.Label>}
       <Select.Control>
         <Select.Trigger>
           <Select.ValueText placeholder={placeholder} />
