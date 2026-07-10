@@ -41,7 +41,7 @@ export const ActivityWidget = () => {
   }, [current, streak?.hasCompletedToday]);
 
   return (
-    <Card>
+    <Card minH={{ base: 'auto', md: '12rem' }}>
       <Card.Header fontSize="lg" fontWeight="bold">
         Streak
       </Card.Header>
@@ -50,20 +50,24 @@ export const ActivityWidget = () => {
       ) : (
         <Card.Content
           w="full"
-          h="full"
+          h={{ base: 'auto', md: 'full' }}
           justify={{ base: 'center', md: 'space-around' }}
+          gap={{ base: 2, sm: 0, md: 4 }}
         >
-          <Text fontSize={{ base: 'xs', md: 'sm' }} textAlign="center">
-            Complete an exercise every day to build your streak
+          <Text
+            fontSize={{ base: 'xs', md: 'sm' }}
+            display={{ base: 'inline-flex', sm: 'none', md: 'inline-flex' }}
+            textAlign="center"
+          >
+            Complete daily exercises to build your streak
           </Text>
 
           <HStack
+            align="center"
             w="full"
-            flex={1}
             maxW="fit-content"
             mx="auto"
-            justify="flex-start"
-            align="center"
+            display={{ base: 'inline-flex', sm: 'none', md: 'inline-flex' }}
           >
             {visibleDays.map((day, index) => (
               <Stack key={`${day.label}-${index}`} align="center" gap={1}>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { auth } from '@/auth/auth';
 import db from '@/db/client';
-import { daysBetween } from '../../../../utils';
+import { daysBetween } from '@/utils/date';
 
 /**
  * POST /api/exercises/${exerciseId}/attempts

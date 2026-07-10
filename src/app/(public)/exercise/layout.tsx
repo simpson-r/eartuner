@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { PlayerLayout, LayoutProps } from '@/components/Layout';
+import { PlayerLayout, LayoutProps } from '@/components/layout/Layout';
 
 export const metadata: Metadata = {
   title: 'Exercise - EarTuner',

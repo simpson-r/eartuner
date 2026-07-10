@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Instrument } from '@prisma/client';
 
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { toaster } from '@/components/ui/toaster';
 import { useHistory } from '@/hooks/use-history';

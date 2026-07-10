@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { Box, Center, Grid } from '@chakra-ui/react';
 
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 import { EXERCISE_THEORY_CONFIG } from '@/config/theory';
 import { useExercisePlayer } from '@/features/exercise/hooks/use-exercise-player';
 import { PlayerHeader } from '@/features/exercise/components/PlayerHeader';
@@ -63,6 +63,8 @@ export const PlayerPage = ({
       dispatch(hasNext ? { type: 'NEXT' } : { type: 'END_EXERCISE' });
     }
   };
+
+  console.log({ duration });
 
   return (
     <Grid

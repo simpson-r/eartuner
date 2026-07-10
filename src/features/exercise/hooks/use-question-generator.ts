@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { shuffle } from '../../../../utils';
 import { Question } from '@/features/exercise/types';
+import { shuffle } from '@/utils/array';
 
 const MIN_MIDI = 48; // C3
 const MAX_MIDI = 59; // B3
 
-/* HELPERS */
 const randomInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 

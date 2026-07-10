@@ -1,10 +1,11 @@
 'use client';
 
 import * as Tone from 'tone';
+
 import { chords, intervals, scaleDegrees, scales } from '@/config/theory';
-import { shuffle } from '../../utils';
 import { ChordInversion, PlaybackDirection } from '@/features/exercise/types';
-import { Sampler } from 'tone';
+import { shuffle } from '@/utils/array';
+
 
 /**
  * CONSTANTS
@@ -41,7 +42,7 @@ const inversionMap = {
  * PLAYBACK METHODS
  */
 export async function playInterval(
-  instrument: Sampler,
+  instrument: Tone.Sampler,
   midiRoot: number,
   key: keyof typeof intervals,
   mode: PlaybackDirection = 'asc',
@@ -80,7 +81,7 @@ export async function playInterval(
 }
 
 export async function playChord(
-  instrument: Sampler,
+  instrument: Tone.Sampler,
   midiRoot: number,
   key: keyof typeof chords,
   mode: ChordInversion = 'root',
@@ -101,7 +102,7 @@ export async function playChord(
 }
 
 export async function playScale(
-  instrument: Sampler,
+  instrument: Tone.Sampler,
   midiRoot: number,
   key: keyof typeof scales,
   mode: PlaybackDirection = 'asc',
@@ -130,7 +131,7 @@ export async function playScale(
 }
 
 export async function playScaleDegree(
-  instrument: Sampler,
+  instrument: Tone.Sampler,
   midiRoot: number,
   key: keyof typeof scaleDegrees,
 ) {

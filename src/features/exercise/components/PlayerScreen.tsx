@@ -14,8 +14,7 @@ import { ExerciseType } from '@prisma/client';
 import { ElevatedButton } from '@/components/ElevatedButton';
 import { responseSx } from '@/features/exercise/style';
 import { Question } from '@/features/exercise/types';
-
-import { EXERCISE_NAME_MAP } from '../../../../constants';
+import { EXERCISE_NAME_MAP } from '@/utils/constants';
 
 const ICON_BOX_SIZE = 20;
 

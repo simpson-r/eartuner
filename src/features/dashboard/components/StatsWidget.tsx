@@ -65,6 +65,9 @@ export const StatsWidget = () => {
   const [selectedType, setSelectedType] =
     useState<SelectedBreakdownType>('All');
 
+  /**
+   * DERIVED VARS
+   */
   const breakdownMap = buildBreakdownMap(stats?.breakdownByType);
 
   const summaryStats =

@@ -11,7 +11,7 @@ import {
 
 import SparkIcon from '@/assets/spark.svg?component';
 import TrophyIcon from '@/assets/trophy.svg?component';
-import { getPerformanceCTA, formatDuration } from '../utils';
+import { getPerformanceCTA, formatDuration, formatScore } from '../utils';
 import { Stat } from '@/components/Stat';
 import { Fragment, useMemo } from 'react';
 import { ElevatedButton } from '@/components/ElevatedButton';
@@ -32,7 +32,7 @@ export const CompletionScreen = ({
   isLoggedIn,
 }: {
   state: ExercisePlayerState;
-  duration: number,
+  duration: number;
   isLoggedIn: boolean;
 }) => {
   const router = useRouter();
@@ -41,13 +41,13 @@ export const CompletionScreen = ({
   const cta = getPerformanceCTA(score);
 
   const statsToDisplay = useMemo(() => {
-    const roundedScore = score.toFixed(2);
+    const roundedScore = formatScore(score);
     return [
       { label: 'Score', value: `${roundedScore}%` },
       { label: 'Questions', value: state.total },
-      { label: 'Time', value: formatDuration(duration || 0) },
+      { label: 'Time', value: formatDuration(duration) },
     ];
-  }, [score, state]);
+  }, [duration, score, state]);
 
   const celebrationEffect = (
     <Box animation="shake 1s ease-in-out infinite">
@@ -82,12 +82,12 @@ export const CompletionScreen = ({
 
       {/* stats */}
       <HStack
-        maxW='300px'
+        maxW="300px"
         align="center"
-        gap={2}
-        justifyContent={{ base: 'center', md: 'space-between' }}
+        justify={{ base: 'center', md: 'space-between' }}
         bgColor="bg"
         rounded="2xl"
+        gap={2}
         p={6}
       >
         {statsToDisplay.map(({ label, value }, index) => (
@@ -96,10 +96,11 @@ export const CompletionScreen = ({
               <Separator
                 orientation="vertical"
                 height="32px"
+
                 borderColor="border"
               />
             )}
-            <Stat key={label} label={label} value={value} gap={0} />
+            <Stat key={label} label={label} value={value} px={2} gap={0} />
           </Fragment>
         ))}
       </HStack>

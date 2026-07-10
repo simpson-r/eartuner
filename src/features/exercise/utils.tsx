@@ -1,7 +1,8 @@
 'use client';
 
-import { randomItem } from '../../../utils';
+import { randomItem } from '@/utils/array';
 
+/** CONSTANTS */
 const SUCCESS_HEADINGS = [
   'Awesome!',
   'Nice!',
@@ -20,6 +21,12 @@ const SUCCESS_MESSAGES = [
 ];
 
 const FAILURE_HEADINGS = ['Almost', 'Incorrect'];
+
+/**
+ * =================
+ * HELPER METHODS
+ * =================
+ */
 
 /**
  * Returns a feedback message based on the user's score.

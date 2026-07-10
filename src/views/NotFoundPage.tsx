@@ -3,7 +3,7 @@
 import { Icon, Link, VStack } from '@chakra-ui/react';
 
 import DrumsticksIcon from '@/assets/drumsticks.svg?component';
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 import { ElevatedButton } from '@/components/ElevatedButton';
 
 /**

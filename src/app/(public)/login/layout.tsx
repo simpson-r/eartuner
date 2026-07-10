@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { Layout, LayoutProps } from '@/components/Layout';
+import { Layout, LayoutProps } from '@/components/layout/Layout';
 
 export const metadata: Metadata = {
   title: 'Log in - EarTuner',

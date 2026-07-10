@@ -19,7 +19,7 @@ import {
   DEFAULT_QUESTION_COUNT,
   QUESTION_MAX,
   QUESTION_MIN,
-} from '../../../../constants';
+} from '@/utils/constants';
 import {
   CollectionConfig,
   PlaybackMode,

@@ -3,8 +3,8 @@
 import { Flex, VStack } from '@chakra-ui/react';
 
 import { ExerciseWidget } from '@/features/dashboard/components/ExerciseWidget';
-import { Layout } from '@/components/Layout';
-import { FeatureSection } from '@/components/FeatureSection';
+import { Layout } from '@/components/layout/Layout';
+import { FeatureSection } from '@/components/layout/FeatureSection';
 
 const cta = {
   header: 'Choose an exercise to start practicing',

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import { getSession } from '@/auth/sessions';
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 import { NotFoundPage } from '@/views/NotFoundPage';
 
 export const metadata: Metadata = {

@@ -3,7 +3,7 @@ import { LandingPage } from '@/views/LandingPage';
 import { redirect } from 'next/navigation';
 
 import { getCurrentUser } from '@/auth/sessions';
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 
 const Home = async () => {
   const user = await getCurrentUser();

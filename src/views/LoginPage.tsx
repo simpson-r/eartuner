@@ -20,9 +20,9 @@ import {
 } from '@chakra-ui/react';
 
 import { getEmailProvider } from '@/auth/emails';
-import { useLogin } from '@/hooks/use-login';
-import { Layout } from '@/components/Layout';
+import { Layout } from '@/components/layout/Layout';
 import { ElevatedButton } from '@/components/ElevatedButton';
+import { useLogin } from '@/hooks/use-login';
 
 const loggedOutCta = {
   header: 'Sign in to EarTuner',

@@ -6,7 +6,7 @@ import {
   SimpleGrid,
   VStack,
 } from '@chakra-ui/react';
-import { Card } from './Card';
+import { Card } from '../Card';
 
 import AudioBarsIcon from '@/assets/audio-bars.svg?component';
 import GraphIcon from '@/assets/graph.svg?component';

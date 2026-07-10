@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import { getSession } from '@/auth/sessions';
-import { Providers } from '@/lib/providers';
+import { Providers } from '@/app/providers';
 
 export const metadata: Metadata = {
   title: 'EarTuner',
