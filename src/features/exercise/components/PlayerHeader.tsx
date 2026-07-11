@@ -37,7 +37,7 @@ export const PlayerHeader = ({
       <HStack
         justifyContent="space-between"
         align="center"
-        minH="70px"
+        minH="68px"
         w="11/12"
       >
         {/* exit button */}

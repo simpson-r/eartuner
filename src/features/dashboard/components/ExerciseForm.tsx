@@ -3,9 +3,11 @@
 import { useState } from 'react';
 
 import {
+  CheckboxGroup,
   createListCollection,
   Dialog,
   Field,
+  Fieldset,
   NumberInput,
   Stack,
 } from '@chakra-ui/react';
@@ -26,6 +28,7 @@ import {
   ExerciseConfig,
   ExerciseFormState,
 } from '@/features/exercise/types';
+import { Checkbox } from '@/components/ui/checkbox';
 
 function getOptionSet(
   options: Record<string, string[]>,
@@ -48,7 +51,8 @@ function getDefaultSettings(
     selected: primary.defaultValue,
     playback: secondary?.defaultValue || '',
     numQuestions: DEFAULT_QUESTION_COUNT,
-    params: { fixedRoot: false, autoProceed: false },
+    fixedRoot: false,
+    autoProceed: false,
   };
 }
 
@@ -84,7 +88,8 @@ export const ExerciseForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const { numQuestions, playback, selected } = settings;
+    const { numQuestions, playback, selected, autoProceed, fixedRoot } =
+      settings;
     const optionSet = getOptionSet(options, selected);
 
     await onCreate({
@@ -92,6 +97,8 @@ export const ExerciseForm = ({
       numQuestions,
       items: optionSet,
       playback: playback as PlaybackMode,
+      autoProceed,
+      fixedRoot,
     });
 
     onClose();
@@ -150,6 +157,20 @@ export const ExerciseForm = ({
 
           {/* "secondary" control */}
           {secondary && renderDropdown(secondary)}
+          {/* advanced options */}
+          <Fieldset.Root gap={0}>
+            <Fieldset.Legend fontSize="sm">Advanced options</Fieldset.Legend>
+            <Checkbox
+              label="Fixed root"
+              checked={settings?.fixedRoot || false}
+              onCheckedChange={(e) => updateSetting('fixedRoot', !!e.checked)}
+            />
+            <Checkbox
+              label="Auto proceed"
+              checked={settings?.autoProceed || false}
+              onCheckedChange={(e) => updateSetting('autoProceed', !!e.checked)}
+            />
+          </Fieldset.Root>
         </Stack>
       </Dialog.Body>
       <Dialog.Footer justifyContent="center">

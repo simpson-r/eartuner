@@ -23,12 +23,13 @@ export const Checkbox = ({
     <ChakraCheckbox.Root
       checked={checked}
       onCheckedChange={onCheckedChange}
+      mt={2}
       {...props}
     >
       <ChakraCheckbox.HiddenInput />
       <ChakraCheckbox.Control />
       <ChakraCheckbox.Label>
-        <Stack direction="row" align="center" w="100%">
+        <Stack direction="row" align="center" w="full">
           <Text fontWeight="normal" whiteSpace="nowrap">
             {label}
           </Text>

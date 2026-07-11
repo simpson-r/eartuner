@@ -36,26 +36,24 @@ export type ClientPreferences = Omit<UserPreferences, 'userId'>;
 /**
  * EXERCISE STATE TYPES
  */
-export type ExerciseParams = Record<string, boolean | string>;
-
 export type ExerciseFormState = {
   selected: string; // selected preset/grouping - ex."simple", "diatonic", "all", "custom"
   items?: string[];
   playback: string;
   numQuestions: number;
-  params: ExerciseParams;
+  fixedRoot?: boolean;
+  autoProceed?: boolean;
 };
 
-export type ExerciseSettings = {
-  selected: string; // grouping
-  playback: string;
+export interface ExerciseConfig {
+  type: ExerciseType;
   items: string[];
-  params: ExerciseParams;
-};
+  playback: PlaybackMode;
+  numQuestions: number;
+  fixedRoot?: boolean;
+  autoProceed?: boolean;
+}
 
-/**
- * EXERCISE PLAYER TYPES
- */
 export type PlaybackDirection = 'harmonic' | 'asc' | 'des' | 'asc-des';
 export type ChordInversion = 'root' | 'first' | 'second' | 'third';
 export type PlaybackMode = PlaybackDirection | ChordInversion;
@@ -64,13 +62,6 @@ export interface Question {
   root: number;
   answer: string;
   selected?: string;
-}
-
-export interface ExerciseConfig {
-  type: ExerciseType;
-  items: string[];
-  playback: PlaybackMode;
-  numQuestions: number;
 }
 
 export interface ExerciseMetadata {

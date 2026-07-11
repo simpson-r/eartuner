@@ -20,11 +20,15 @@ const ICON_SIZE_SM = 10;
 
 export const PlayerFooter = ({
   answer,
+  autoProceed,
+  secsRemaining,
   correct,
   finished = false,
   onContinueClick,
 }: {
   answer: string | null;
+  autoProceed?: boolean;
+  secsRemaining?: number;
   finished?: boolean;
   correct: boolean;
   onContinueClick: VoidFunction;
@@ -88,7 +92,7 @@ export const PlayerFooter = ({
           surfaceColor={finished ? 'cobalt.500' : sx.button.solid.bgColor}
           shadowColor={finished ? 'cobalt.600' : sx.button.solid.borderColor}
         >
-          Continue
+          {autoProceed && !finished ? `Next in ${secsRemaining}...` : 'Continue'}
         </ElevatedButton>
       </HStack>
     </Container>

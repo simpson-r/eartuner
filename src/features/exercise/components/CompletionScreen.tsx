@@ -9,6 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import HeadphoneIcon from '@/assets/headphones.svg?component';
 import SparkIcon from '@/assets/spark.svg?component';
 import TrophyIcon from '@/assets/trophy.svg?component';
 import { getPerformanceCTA, formatDuration, formatScore } from '../utils';
@@ -37,8 +38,9 @@ export const CompletionScreen = ({
 }) => {
   const router = useRouter();
 
-  const score = ((state.correct * 1.0) / state.total) * 100;
+  const score = (state.correct / state.total) * 100;
   const cta = getPerformanceCTA(score);
+  const showCelebrationIcons = score >= 80;
 
   const statsToDisplay = useMemo(() => {
     const roundedScore = formatScore(score);
@@ -50,7 +52,10 @@ export const CompletionScreen = ({
   }, [duration, score, state]);
 
   const celebrationEffect = (
-    <Box animation="shake 1s ease-in-out infinite">
+    <Box
+      animation="shake 1s ease-in-out infinite"
+      display={showCelebrationIcons ? 'inline-flex' : 'none'}
+    >
       <Icon as={SparkIcon} boxSize={{ base: ICON_SIZE_SM, md: ICON_SIZE }} />
     </Box>
   );
@@ -65,7 +70,7 @@ export const CompletionScreen = ({
         {celebrationEffect}
         <Box animation="scaleUp 500ms cubic-bezier(0.34, 1.56, 0.64, 1)">
           <Icon
-            as={TrophyIcon}
+            as={score < 80 ? HeadphoneIcon : TrophyIcon}
             boxSize={{ base: HERO_ICON_SIZE_SM, md: HERO_ICON_SIZE }}
           />
         </Box>

@@ -34,6 +34,7 @@ export interface ExercisePlayerState {
   playing: boolean;
   meta: ExerciseMetadata[];
   endTime?: number;
+  hasAnswered: boolean;
 }
 
 type Action =
@@ -55,6 +56,7 @@ const initialState: ExercisePlayerState = {
   finished: false,
   playing: false,
   meta: [],
+  hasAnswered: false,
 };
 
 /* REDUCER */
@@ -70,7 +72,7 @@ export function reducer(
       };
     case 'SUBMIT': {
       const q = state.question;
-      if (!q) return state;
+      if (!q || (state.hasAnswered)) return state;
 
       const selected = action.payload;
       const isCorrect = selected === q.answer;
@@ -83,6 +85,7 @@ export function reducer(
         ],
         correct: state.correct + (isCorrect ? 1 : 0),
         question: { ...q, selected },
+        hasAnswered: true,
         endTime: state.index + 1 === state.total ? Date.now() : undefined,
       };
     }
@@ -91,6 +94,7 @@ export function reducer(
         ...state,
         index: state.index + 1,
         question: undefined,
+        hasAnswered: false,
       };
     case 'PLAY_SOUND':
       return {
@@ -120,7 +124,7 @@ export const useExercisePlayer = (
   config: ExerciseConfig,
   isLoggedIn: boolean,
 ) => {
-  const { type, items, numQuestions } = config;
+  const { type, items, numQuestions, fixedRoot, autoProceed } = config;
   const { labels } = EXERCISE_THEORY_CONFIG[type];
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
@@ -130,7 +134,7 @@ export const useExercisePlayer = (
   const [instrument, setInstrument] = useState<Tone.Sampler>();
 
   const { preferences } = usePreferences();
-  const { generateQuestion } = useQuestionGenerator(items);
+  const { generateQuestion } = useQuestionGenerator(items, fixedRoot);
   const { create, newAttempt } = useHistory();
 
   const startedAtRef = useRef(Date.now());
@@ -138,6 +142,7 @@ export const useExercisePlayer = (
   const hasPostedAttempt = useRef(false);
   const correctPlayerRef = useRef<Tone.Player | null>(null);
   const wrongPlayerRef = useRef<Tone.Player | null>(null);
+  const [secsRemaining, setSecsRemaining] = useState(2);
 
   const options = items.map((item) => ({
     label: labels[item as keyof typeof labels],
@@ -219,11 +224,11 @@ export const useExercisePlayer = (
 
   // save results on exercise completion
   useEffect(() => {
-    if (!state.finished || !isLoggedIn || hasPostedAttempt.current) return;
-
     durationRef.current = Math.round(
       ((state?.endTime || 0) - startedAtRef.current) / 1000,
     );
+
+    if (!state.finished || !isLoggedIn || hasPostedAttempt.current) return;
 
     create({
       exerciseType: type,
@@ -241,6 +246,29 @@ export const useExercisePlayer = (
     type,
     create,
   ]);
+
+  // auto proceed
+  useEffect(() => {
+    if (!autoProceed || !state.hasAnswered) return;
+
+    setSecsRemaining(2);
+
+    const intervalId = window.setInterval(() => {
+      setSecsRemaining((s) => Math.max(0, s - 1));
+    }, 1000);
+
+    const timeoutId = window.setTimeout(() => {
+      clearInterval(intervalId);
+
+      const hasNext = state.index + 1 < state.total;
+      dispatch(hasNext ? { type: 'NEXT' } : { type: 'END_EXERCISE' });
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, [autoProceed, state.hasAnswered]);
 
   /**
    * ACTIONS
@@ -313,6 +341,8 @@ export const useExercisePlayer = (
     attempt: newAttempt,
     progress,
     canPlayAudio: !!instrument && !state.playing,
+    autoProceed,
+    secsRemaining,
     dispatch,
     playSound,
   };

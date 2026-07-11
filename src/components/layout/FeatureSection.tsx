@@ -40,7 +40,7 @@ export const FeatureSection = () => {
     <Box as="section" py={{ base: 4, md: 12 }}>
       <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
         <VStack gap={{ base: 6, md: 8 }} alignItems="center">
-          <Heading size="3xl" textAlign="center">
+          <Heading size="2xl" textAlign="center">
             Why EarTuner?
           </Heading>
 

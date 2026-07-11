@@ -34,7 +34,6 @@ import { formatScore } from '@/features/exercise/utils';
 import { SelectedBreakdownType } from '../types';
 import { buildBreakdownMap, getChartRows } from '../utils';
 
-const CHART_HEIGHT = 120;
 const STATS_SECTIONS: {
   label: string;
   key: keyof MeStatsResponse['summary'];
@@ -63,6 +62,7 @@ export const StatsWidget = () => {
   const [selectedType, setSelectedType] =
     useState<SelectedBreakdownType>('All');
   const hideLabels = useBreakpointValue({ base: true, md: false });
+  const chartHeight= useBreakpointValue({base: 120, md: 150})
 
   /**
    * DERIVED VARS
@@ -145,7 +145,7 @@ export const StatsWidget = () => {
                 <RechartsBarChart
                   data={barChart.data}
                   margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                  height={CHART_HEIGHT}
+                  height={chartHeight}
                   responsive
                 >
                   <CartesianGrid
@@ -194,7 +194,7 @@ export const StatsWidget = () => {
             {/* pie chart summary */}
             {hasStats && selectedType === 'All' && (
               <Chart.Root chart={pieChart} aspectRatio="unset">
-                <RechartsPieChart height={CHART_HEIGHT} responsive>
+                <RechartsPieChart height={chartHeight} responsive>
                   {hideLabels ? null : (
                     <Legend align="center" content={<Chart.Legend />} />
                   )}
@@ -224,7 +224,7 @@ export const StatsWidget = () => {
           </Box>
 
           {/* stats summary */}
-          <Stat.Row items={STATS_SECTIONS} stats={summaryStats} mt="auto"/>
+          <Stat.Row items={STATS_SECTIONS} stats={summaryStats}/>
         </VStack>
       )}
     </Card>

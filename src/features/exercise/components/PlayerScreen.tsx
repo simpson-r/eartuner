@@ -17,6 +17,7 @@ import { Question } from '@/features/exercise/types';
 import { EXERCISE_NAME_MAP } from '@/utils/constants';
 
 const ICON_BOX_SIZE = 20;
+const ICON_BOX_SIZE_SM = 12;
 
 export const PlayerScreen = ({
   exerciseType,
@@ -48,11 +49,10 @@ export const PlayerScreen = ({
     <Flex flex="1" w="full" h="full" justify="center" align="center">
       <Flex
         direction="column"
-        align={{ base: 'center', md: 'normal' }}
+        align={{ base: 'center', md: 'flex-start' }}
         gap={{ base: 10, md: 24 }}
         maxW="720px"
         w="full"
-        h="5/6"
       >
         <Heading size="2xl" textAlign="left">
           {`Which ${EXERCISE_NAME_MAP[exerciseType]} do you hear?`}
@@ -67,10 +67,15 @@ export const PlayerScreen = ({
           <VStack gap={6}>
             <ElevatedButton
               aria-label="Play interval"
-              icon={<Icon as={FaPlay} boxSize={ICON_BOX_SIZE} />}
+              icon={
+                <Icon
+                  as={FaPlay}
+                  boxSize={{ base: ICON_BOX_SIZE_SM, md: ICON_BOX_SIZE }}
+                />
+              }
               disabled={!enablePlayButton}
               onClick={handlePlayClick}
-              boxSize={{ base: '160px', md: '180px' }}
+              boxSize={{ base: '120px', md: '180px' }}
               surfaceColor="cobalt.500"
               shadowColor="cobalt.600"
               rounded="4xl"
@@ -94,7 +99,7 @@ export const PlayerScreen = ({
                   key={opt.value}
                   fontSize="sm"
                   w="full"
-                  minH={12}
+                  minH={options.length > 8 ? 10 : 12}
                   onClick={() => handleResponseClick(opt.value)}
                   disabled={(answered && !selected) || false}
                   borderWidth="1.8px"

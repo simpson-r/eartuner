@@ -35,6 +35,8 @@ export const PlayerPage = ({
     duration,
     exerciseType,
     canPlayAudio,
+    autoProceed,
+    secsRemaining,
     dispatch,
     playSound,
   } = useExercisePlayer(config, isLoggedIn);
@@ -56,6 +58,8 @@ export const PlayerPage = ({
     dispatch({ type: 'SUBMIT', payload: value });
 
   const handleContinueClick = () => {
+    if (autoProceed && !finished) return;
+    
     if (finished) {
       router.push(isLoggedIn ? '/dashboard' : '/');
     } else {
@@ -63,8 +67,6 @@ export const PlayerPage = ({
       dispatch(hasNext ? { type: 'NEXT' } : { type: 'END_EXERCISE' });
     }
   };
-
-  console.log({ duration });
 
   return (
     <Grid
@@ -87,7 +89,7 @@ export const PlayerPage = ({
           totalQuestions={total}
         />
       )}
-      <Layout.PageContainer overflowY="auto" justify="center" p={2}>
+      <Layout.PageContainer overflowY="auto" justify="center" py={8} px={2}>
         {/* main area */}
         {!finished ? (
           <PlayerScreen
@@ -127,6 +129,8 @@ export const PlayerPage = ({
             answer={answerLabel}
             finished={finished}
             correct={correct}
+            autoProceed={autoProceed}
+            secsRemaining={secsRemaining}
             onContinueClick={handleContinueClick}
           />
         )}
