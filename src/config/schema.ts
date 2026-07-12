@@ -24,7 +24,8 @@ export const exerciseConfigSchema = z
       .optional()
       .default(DEFAULT_QUESTION_COUNT),
     fixedRoot: z.boolean().optional().default(false),
-    autoProceed: z.boolean().optional().default(false)
+    autoProceed: z.boolean().optional().default(false),
+    shortcut: z.boolean().optional().default(false),
   })
   .superRefine((data, ctx) => {
     let validKeys: string[] = [];

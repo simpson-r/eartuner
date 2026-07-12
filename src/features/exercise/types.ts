@@ -43,6 +43,7 @@ export type ExerciseFormState = {
   numQuestions: number;
   fixedRoot?: boolean;
   autoProceed?: boolean;
+  shortcut?: boolean;
 };
 
 export interface ExerciseConfig {
@@ -52,6 +53,7 @@ export interface ExerciseConfig {
   numQuestions: number;
   fixedRoot?: boolean;
   autoProceed?: boolean;
+  shortcut?: boolean;
 }
 
 export type PlaybackDirection = 'harmonic' | 'asc' | 'des' | 'asc-des';

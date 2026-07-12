@@ -23,6 +23,7 @@ export const PlayerFooter = ({
   autoProceed,
   secsRemaining,
   correct,
+  showShortcuts,
   finished = false,
   onContinueClick,
 }: {
@@ -31,17 +32,21 @@ export const PlayerFooter = ({
   secsRemaining?: number;
   finished?: boolean;
   correct: boolean;
+  showShortcuts?: boolean;
   onContinueClick: VoidFunction;
 }) => {
   const sx = responseSx[correct || finished ? 'success' : 'error'];
-
+  const btnCTA =
+    autoProceed && !finished
+      ? `Next in ${secsRemaining}...`
+      : `Continue ${showShortcuts ? '↵' : ''}`;
   const feedback = useMemo(
     () => getAnswerFeedback(correct, answer || ''),
     [correct, answer],
   );
 
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.code !== 'Space') return;
+    if (e.code !== 'Enter') return;
 
     e.preventDefault();
     onContinueClick();
@@ -105,10 +110,9 @@ export const PlayerFooter = ({
           onClick={onContinueClick}
           surfaceColor={finished ? 'cobalt.500' : sx.button.solid.bgColor}
           shadowColor={finished ? 'cobalt.600' : sx.button.solid.borderColor}
+          alignItems="center"
         >
-          {autoProceed && !finished
-            ? `Next in ${secsRemaining}...`
-            : 'Continue'}
+          {btnCTA}
         </ElevatedButton>
       </HStack>
     </Container>

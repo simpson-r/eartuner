@@ -32,6 +32,8 @@ export const PlayerPage = ({
     status,
     options,
     progress,
+    score,
+    showShortcuts,
     duration,
     exerciseType,
     canPlayAudio,
@@ -99,6 +101,7 @@ export const PlayerPage = ({
             options={options}
             question={question}
             enablePlayButton={canPlayAudio}
+            showShortcuts={showShortcuts}
             handlePlayClick={handlePlayClick}
             handleResponseClick={handleResponseClick}
           />
@@ -106,7 +109,8 @@ export const PlayerPage = ({
           <Center minH="100%">
             <CompletionScreen
               duration={duration}
-              state={state}
+              total={state.total}
+              score={score}
               isLoggedIn={isLoggedIn}
             />
           </Center>
@@ -127,6 +131,7 @@ export const PlayerPage = ({
         {showFooter && (
           <PlayerFooter
             answer={answerLabel}
+            showShortcuts={showShortcuts}
             finished={finished}
             correct={correct}
             autoProceed={autoProceed}

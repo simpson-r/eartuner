@@ -16,7 +16,6 @@ import { getPerformanceCTA, formatDuration, formatScore } from '../utils';
 import { Stat } from '@/components/Stat';
 import { Fragment, useMemo } from 'react';
 import { ElevatedButton } from '@/components/ElevatedButton';
-import { ExercisePlayerState } from '../hooks/use-exercise-player';
 import { useRouter } from 'next/navigation';
 
 const ICON_SIZE = 20;
@@ -28,17 +27,18 @@ const HERO_ICON_SIZE_SM = 180;
  * This renders the post-exercise summary once the user finishes a training session.
  */
 export const CompletionScreen = ({
-  state,
   duration,
   isLoggedIn,
+  score,
+  total,
 }: {
-  state: ExercisePlayerState;
   duration: number;
   isLoggedIn: boolean;
+  score: number;
+  total: number;
 }) => {
   const router = useRouter();
 
-  const score = (state.correct / state.total) * 100;
   const cta = getPerformanceCTA(score);
   const showCelebrationIcons = score >= 80;
 
@@ -46,10 +46,10 @@ export const CompletionScreen = ({
     const roundedScore = formatScore(score);
     return [
       { label: 'Score', value: `${roundedScore}%` },
-      { label: 'Questions', value: state.total },
+      { label: 'Questions', value: total },
       { label: 'Time', value: formatDuration(duration) },
     ];
-  }, [duration, score, state]);
+  }, [duration, score, total]);
 
   const celebrationEffect = (
     <Box

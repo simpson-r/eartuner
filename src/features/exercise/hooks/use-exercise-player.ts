@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import * as Tone from 'tone';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { ExerciseType } from '@prisma/client';
 
 import * as playback from '@/audio/playback';
-import { ensureAudioReady, loadInstruments } from '@/audio/instruments';
+import { ensureAudioReady } from '@/audio/instruments';
 import {
   EXERCISE_THEORY_CONFIG,
   chords,
@@ -21,6 +20,8 @@ import {
   PlaybackDirection,
   Question,
 } from '@/features/exercise/types';
+import { useExerciseInstrument } from './use-exercise-instrument';
+import { useFeedbackSounds } from './use-feedback-sounds';
 
 /**
  * TYPES & INTERFACES
@@ -44,9 +45,6 @@ type Action =
   | { type: 'PLAY_SOUND'; payload: boolean }
   | { type: 'RESET'; payload: { total: number } }
   | { type: 'END_EXERCISE' };
-
-const CORRECT_DEST = '/sounds/correct.mp3';
-const WRONG_DEST = '/sounds/wrong.mp3';
 
 const initialState: ExercisePlayerState = {
   total: 1,
@@ -72,7 +70,7 @@ export function reducer(
       };
     case 'SUBMIT': {
       const q = state.question;
-      if (!q || (state.hasAnswered)) return state;
+      if (!q || state.hasAnswered) return state;
 
       const selected = action.payload;
       const isCorrect = selected === q.answer;
@@ -124,24 +122,28 @@ export const useExercisePlayer = (
   config: ExerciseConfig,
   isLoggedIn: boolean,
 ) => {
-  const { type, items, numQuestions, fixedRoot, autoProceed } = config;
+  const { type, items, numQuestions, fixedRoot, autoProceed, shortcut } =
+    config;
   const { labels } = EXERCISE_THEORY_CONFIG[type];
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     total: numQuestions,
   });
 
-  const [instrument, setInstrument] = useState<Tone.Sampler>();
-
   const { preferences } = usePreferences();
-  const { generateQuestion } = useQuestionGenerator(items, fixedRoot);
   const { create, newAttempt } = useHistory();
+  const { generateQuestion } = useQuestionGenerator(items, fixedRoot);
+
+  const instrument = useExerciseInstrument(
+    preferences?.defaultInstrument ?? 'Piano',
+  );
+
+  const latestResult = state.meta.at(-1);
+
+  useFeedbackSounds(latestResult, !!preferences?.lessonSoundEffects);
 
   const startedAtRef = useRef(Date.now());
-  const durationRef = useRef(0);
   const hasPostedAttempt = useRef(false);
-  const correctPlayerRef = useRef<Tone.Player | null>(null);
-  const wrongPlayerRef = useRef<Tone.Player | null>(null);
   const [secsRemaining, setSecsRemaining] = useState(2);
 
   const options = items.map((item) => ({
@@ -152,43 +154,6 @@ export const useExercisePlayer = (
   /**
    * EFFECTS
    */
-  // audio context initialization
-  useEffect(() => {
-    const resume = async () => {
-      await Tone.start();
-      cleanup();
-    };
-
-    const cleanup = () => {
-      window.removeEventListener('pointerdown', resume);
-      window.removeEventListener('keydown', resume);
-    };
-
-    const initAudio = async () => {
-      window.addEventListener('pointerdown', resume);
-      window.addEventListener('keydown', resume);
-
-      const loadedInstrument = await loadInstruments(
-        preferences?.defaultInstrument || 'Piano',
-      );
-      setInstrument(loadedInstrument);
-    };
-
-    initAudio();
-    return cleanup;
-  }, [preferences?.defaultInstrument]);
-
-  // feedback sound players initialization
-  useEffect(() => {
-    correctPlayerRef.current = new Tone.Player(CORRECT_DEST).toDestination();
-    wrongPlayerRef.current = new Tone.Player(WRONG_DEST).toDestination();
-
-    return () => {
-      correctPlayerRef.current?.dispose();
-      wrongPlayerRef.current?.dispose();
-    };
-  }, [preferences?.lessonSoundEffects]);
-
   // load next question
   useEffect(() => {
     if (!state.question && !state.finished) {
@@ -196,45 +161,17 @@ export const useExercisePlayer = (
     }
   }, [generateQuestion, state.question, state.finished]);
 
-  // play feedback sounds
-  useEffect(() => {
-    if (state.meta.length === 0 || !preferences?.lessonSoundEffects) return;
-    const lastResult = state.meta[state.meta.length - 1];
-
-    const playFeedbackSound = async () => {
-      if (Tone.getContext().state !== 'running') return;
-
-      const player = lastResult.correct
-        ? correctPlayerRef.current
-        : wrongPlayerRef.current;
-
-      if (!player || !player.loaded) return;
-
-      try {
-        player.stop();
-        player.start();
-      } catch (error) {
-        console.error('Failed to play feedback sound:', error);
-      }
-    };
-
-    playFeedbackSound();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.meta]);
-
   // save results on exercise completion
   useEffect(() => {
-    durationRef.current = Math.round(
-      ((state?.endTime || 0) - startedAtRef.current) / 1000,
-    );
-
     if (!state.finished || !isLoggedIn || hasPostedAttempt.current) return;
+
+    hasPostedAttempt.current = true;
 
     create({
       exerciseType: type,
       numQuestions: state.total,
       score: (state.correct / state.total) * 100,
-      durationSec: durationRef.current,
+      durationSec: duration,
       meta: state.meta,
     });
   }, [
@@ -322,20 +259,33 @@ export const useExercisePlayer = (
   /**
    * DERIVED VARIABLES
    */
-  const progress = useMemo(() => {
-    return Math.ceil((state.index / state.total) * 100);
-  }, [state.index, state.total]);
 
-  const status = useMemo(() => {
-    const selected = state.question?.selected;
-    if (selected == null) return 'idle';
-    return selected === state.question?.answer ? 'correct' : 'wrong';
-  }, [state.question?.selected, state.question?.answer]);
+  const correctCount = state.meta.reduce(
+    (count, result) => count + Number(result.correct),
+    0,
+  );
+
+  const score = state.total === 0 ? 0 : (correctCount / state.total) * 100;
+
+  const duration =
+    state.endTime == null
+      ? 0
+      : Math.max(0, Math.round((state.endTime - startedAtRef.current) / 1000));
+
+  const progress = Math.ceil((state.index / state.total) * 100);
+
+  const status =
+    state.question?.selected == null
+      ? 'idle'
+      : state.question.selected === state.question.answer
+        ? 'correct'
+        : 'wrong';
 
   return {
     state,
+    score,
     exerciseType: type,
-    duration: durationRef.current,
+    duration,
     options,
     status,
     attempt: newAttempt,
@@ -343,6 +293,7 @@ export const useExercisePlayer = (
     canPlayAudio: !!instrument && !state.playing,
     autoProceed,
     secsRemaining,
+    showShortcuts: shortcut,
     dispatch,
     playSound,
   };

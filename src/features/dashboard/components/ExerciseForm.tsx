@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import {
-  CheckboxGroup,
   createListCollection,
   Dialog,
   Field,
@@ -53,8 +52,25 @@ function getDefaultSettings(
     numQuestions: DEFAULT_QUESTION_COUNT,
     fixedRoot: false,
     autoProceed: false,
+    shortcut: false,
   };
 }
+
+type AdvancedOptions = 'fixedRoot' | 'autoProceed' | 'shortcut';
+const ADVANCED_OPTIONS_MAP = [
+  {
+    label: 'Fixed root',
+    key: 'fixedRoot',
+  },
+  {
+    label: 'Auto proceed',
+    key: 'autoProceed',
+  },
+  {
+    label: 'Keyboard shortcuts',
+    key: 'shortcut',
+  },
+];
 
 /**
  * This component displays a modal for configuring a custom ear training exercise.
@@ -88,8 +104,14 @@ export const ExerciseForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const { numQuestions, playback, selected, autoProceed, fixedRoot } =
-      settings;
+    const {
+      numQuestions,
+      playback,
+      selected,
+      autoProceed,
+      fixedRoot,
+      shortcut,
+    } = settings;
     const optionSet = getOptionSet(options, selected);
 
     await onCreate({
@@ -99,6 +121,7 @@ export const ExerciseForm = ({
       playback: playback as PlaybackMode,
       autoProceed,
       fixedRoot,
+      shortcut,
     });
 
     onClose();
@@ -158,18 +181,17 @@ export const ExerciseForm = ({
           {/* "secondary" control */}
           {secondary && renderDropdown(secondary)}
           {/* advanced options */}
-          <Fieldset.Root gap={0}>
+          <Fieldset.Root>
             <Fieldset.Legend fontSize="sm">Advanced options</Fieldset.Legend>
-            <Checkbox
-              label="Fixed root"
-              checked={settings?.fixedRoot || false}
-              onCheckedChange={(e) => updateSetting('fixedRoot', !!e.checked)}
-            />
-            <Checkbox
-              label="Auto proceed"
-              checked={settings?.autoProceed || false}
-              onCheckedChange={(e) => updateSetting('autoProceed', !!e.checked)}
-            />
+            {ADVANCED_OPTIONS_MAP.map(({ label, key }) => (
+              <Checkbox
+                label={label}
+                checked={settings?.[key as AdvancedOptions] || false}
+                onCheckedChange={(e) =>
+                  updateSetting(key as AdvancedOptions, !!e.checked)
+                }
+              />
+            ))}
           </Fieldset.Root>
         </Stack>
       </Dialog.Body>

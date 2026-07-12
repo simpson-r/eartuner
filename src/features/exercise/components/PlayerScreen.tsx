@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FaPlay } from 'react-icons/fa';
 
 import {
@@ -7,6 +7,7 @@ import {
   Icon,
   SimpleGrid,
   Stack,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import { ExerciseType } from '@prisma/client';
@@ -18,6 +19,23 @@ import { EXERCISE_NAME_MAP } from '@/utils/constants';
 
 const ICON_BOX_SIZE = 20;
 const ICON_BOX_SIZE_SM = 12;
+const OPTION_SHORTCUTS = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'q',
+  'w',
+  'e',
+  'r',
+  't',
+  'y',
+] as const;
 
 export const PlayerScreen = ({
   exerciseType,
@@ -26,6 +44,7 @@ export const PlayerScreen = ({
   options,
   enablePlayButton,
   question,
+  showShortcuts = false,
   handlePlayClick,
   handleResponseClick,
 }: {
@@ -35,6 +54,7 @@ export const PlayerScreen = ({
   options: { label: string; value: string }[];
   enablePlayButton: boolean;
   question?: Question;
+  showShortcuts?: boolean;
   handlePlayClick: VoidFunction;
   handleResponseClick: (response: string) => void;
 }) => {
@@ -44,6 +64,30 @@ export const PlayerScreen = ({
   );
 
   const sx = responseSx[correct ? 'success' : 'error'];
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    e.preventDefault();
+
+    if (e.code === 'Space') {
+      handlePlayClick();
+      return;
+    }
+
+    options.forEach((opt, idx) => {
+      if (e.key === OPTION_SHORTCUTS[idx]) {
+        handleResponseClick(opt.value);
+        return;
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!showShortcuts) return;
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   return (
     <Flex flex="1" w="full" h="full" justify="center" align="center">
@@ -92,7 +136,7 @@ export const PlayerScreen = ({
             w="9/12"
             gap={4}
           >
-            {options.map((opt: { label: string; value: string }) => {
+            {options.map((opt: { label: string; value: string }, idx) => {
               const selected = answered && question?.selected === opt.value;
               return (
                 <ElevatedButton
@@ -113,6 +157,12 @@ export const PlayerScreen = ({
                   {...(selected && sx.button.selected)}
                 >
                   {opt.label}
+                  {showShortcuts && (
+                    <Text
+                      fontSize="xs"
+                      textAlign="right"
+                    >{`[${OPTION_SHORTCUTS[idx]}]`}</Text>
+                  )}
                 </ElevatedButton>
               );
             })}
