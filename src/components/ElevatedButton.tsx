@@ -2,11 +2,12 @@ import { Button, ButtonProps } from '@chakra-ui/react';
 import { BUTTON_SHIMMER_SX } from './style';
 import { system } from '@/theme';
 
-interface PressButtonProps extends ButtonProps {
+interface ElevatedButtonProps extends ButtonProps {
   icon?: React.ReactElement;
   surfaceColor?: string;
   shadowColor?: string;
   showShimmer?: boolean;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 export const ElevatedButton = ({
@@ -15,8 +16,9 @@ export const ElevatedButton = ({
   shadowColor = 'border',
   showShimmer,
   children,
+  ref,
   ...props
-}: React.PropsWithChildren<PressButtonProps>) => {
+}: React.PropsWithChildren<ElevatedButtonProps>) => {
   const { disabled } = props;
   const iconOnly = !children;
 
@@ -24,6 +26,7 @@ export const ElevatedButton = ({
 
   return (
     <Button
+      ref={ref}
       display="inline-flex"
       alignItems="center"
       justifyContent="center"

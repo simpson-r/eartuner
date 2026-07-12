@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
   Container,
@@ -39,6 +39,20 @@ export const PlayerFooter = ({
     () => getAnswerFeedback(correct, answer || ''),
     [correct, answer],
   );
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.code !== 'Space') return;
+
+    e.preventDefault();
+    onContinueClick();
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress, false);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress, false);
+    };
+  }, []);
 
   return (
     <Container
@@ -92,7 +106,9 @@ export const PlayerFooter = ({
           surfaceColor={finished ? 'cobalt.500' : sx.button.solid.bgColor}
           shadowColor={finished ? 'cobalt.600' : sx.button.solid.borderColor}
         >
-          {autoProceed && !finished ? `Next in ${secsRemaining}...` : 'Continue'}
+          {autoProceed && !finished
+            ? `Next in ${secsRemaining}...`
+            : 'Continue'}
         </ElevatedButton>
       </HStack>
     </Container>
