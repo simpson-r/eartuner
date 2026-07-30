@@ -9,6 +9,7 @@ import {
   Fieldset,
   NumberInput,
   Stack,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { type ExerciseType } from '@prisma/client';
 
@@ -87,6 +88,7 @@ export const ExerciseForm = ({
 }) => {
   const { primary, secondary } = exerciseConfigs[exerciseType];
   const options = EXERCISE_THEORY_CONFIG[exerciseType].groups;
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const [settings, setSettings] = useState<ExerciseFormState>(() =>
     // @ts-expect-error fix later on
@@ -183,7 +185,9 @@ export const ExerciseForm = ({
           {/* advanced options */}
           <Fieldset.Root>
             <Fieldset.Legend fontSize="sm">Advanced options</Fieldset.Legend>
-            {ADVANCED_OPTIONS_MAP.map(({ label, key }) => (
+            {ADVANCED_OPTIONS_MAP.filter(
+              ({ key }) => !(isMobile && key === 'shortcut'),
+            ).map(({ label, key }) => (
               <Checkbox
                 label={label}
                 checked={settings?.[key as AdvancedOptions] || false}

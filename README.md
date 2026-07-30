@@ -4,6 +4,8 @@ EarTuner is a web application for practicing and improving ear training through 
 
 Users can practice intervals, chords, and scales, customize their exercises, and track their progress over time.
 
+<img width="750" height="420" alt="Screenshot 2026-07-08 at 19 26 41" src="https://github.com/user-attachments/assets/a90436b5-0a51-440b-b72b-e266c55f4c56" />
+
 ## Features
 
 - Interval, chord, scale, and scale degree listening exercises
@@ -34,15 +36,10 @@ Install dependencies:
 npm install
 ```
 
-Generate the Prisma client:
+Generate the Prisma client and run database migrations:
 
 ```bash
 npx prisma generate
-```
-
-Run database migrations:
-
-```bash
 npx prisma migrate dev
 ```
 
@@ -52,12 +49,6 @@ Start the development server:
 npm run dev
 ```
 
-The application will be available at:
-
-```
-http://localhost:3000
-```
-
 ## Environment Variables
 
 Create a `.env` file and configure the required variables, including:
@@ -65,8 +56,3 @@ Create a `.env` file and configure the required variables, including:
 - Database connection
 - Authentication secret
 - Email provider credentials
-- OAuth/API credentials (if applicable)
-
-## License
-
-This project is intended as a portfolio project.
