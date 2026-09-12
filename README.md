@@ -4,7 +4,8 @@ EarTuner is a web application for practicing and improving ear training through 
 
 Users can practice intervals, chords, and scales, customize their exercises, and track their progress over time.
 
-<img width="750" height="420" alt="Screenshot 2026-07-08 at 19 26 41" src="https://github.com/user-attachments/assets/a90436b5-0a51-440b-b72b-e266c55f4c56" />
+<img width="750" height="420" alt="Screenshot 2026-09-12 at 15 33 44" src="https://github.com/user-attachments/assets/40c9166a-dd8d-427f-ab89-90b0954da29a" />
+
 
 ## Features
 
