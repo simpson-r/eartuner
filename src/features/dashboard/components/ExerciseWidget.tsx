@@ -41,13 +41,13 @@ export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
             minH={{ base: '120px', md: '224px' }}
             p={6}
           >
-            {/* heading + description */}
             <VStack align="start" h="full" w="full" gap={4}>
               <Icon
                 as={icon}
                 boxSize={{ base: '48px', md: '72px' }}
                 alignSelf="center"
               />
+              {/* heading + description */}
               <VStack align="center" w="full">
                 <Heading
                   fontSize={{ base: 'sm', md: 'xl' }}

@@ -18,7 +18,7 @@ const pageCTA = {
  */
 export const DashboardPage = () => {
   return (
-    <Layout.PageContainer maxW='5xl'>
+    <Layout.PageContainer maxW="5xl">
       <Stack w="full" maxW="900px" mx="auto" gap={8} px={{ base: 4, md: 0 }}>
         <Layout.TitleBlock
           header={pageCTA.header}
@@ -38,7 +38,7 @@ export const DashboardPage = () => {
             sm: '1fr 1fr',
           }}
           w="full"
-          gap={{base: 4, md: 6}}
+          gap={{ base: 4, md: 6 }}
         >
           <ActivityWidget />
           <StatsWidget />

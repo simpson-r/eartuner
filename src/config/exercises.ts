@@ -36,7 +36,7 @@ export const EXERCISE_TYPE_CONFIG: Exercises[] = [
     title: 'Chords',
     type: ExerciseType.Chord,
     icon: GuitarIocn,
-    description: 'Identify chord quality by ear',
+    description: 'Identify chord qualities from what you hear',
     color: EXERCISE_LABEL_CONFIG.Chord.color,
   },
   {
@@ -50,7 +50,7 @@ export const EXERCISE_TYPE_CONFIG: Exercises[] = [
     title: 'Scale degrees',
     type: ExerciseType.ScaleDegree,
     icon: Pianoicon,
-    description: 'Hear a single note and label its degree in the key',
+    description: 'Hear a single note and label its degree in the scale',
     color: EXERCISE_LABEL_CONFIG.ScaleDegree.color,
   },
 ];
