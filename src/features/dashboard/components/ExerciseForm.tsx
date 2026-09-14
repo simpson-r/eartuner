@@ -61,14 +61,17 @@ type AdvancedOptions = 'fixedRoot' | 'autoProceed' | 'shortcut';
 const ADVANCED_OPTIONS_MAP = [
   {
     label: 'Fixed root',
+    description: 'Keep the same starting note for every question.',
     key: 'fixedRoot',
   },
   {
-    label: 'Auto proceed',
+    label: 'Auto-proceed',
+    description: 'Automatically move to the next question after you answer.',
     key: 'autoProceed',
   },
   {
-    label: 'Keyboard shortcuts',
+    label: 'Hotkeys',
+    description: 'Use your keyboard to select answers.',
     key: 'shortcut',
   },
 ];
@@ -187,13 +190,16 @@ export const ExerciseForm = ({
             <Fieldset.Legend fontSize="sm">Advanced options</Fieldset.Legend>
             {ADVANCED_OPTIONS_MAP.filter(
               ({ key }) => !(isMobile && key === 'shortcut'),
-            ).map(({ label, key }) => (
+            ).map(({ label, description, key }) => (
               <Checkbox
                 label={label}
                 checked={settings?.[key as AdvancedOptions] || false}
+                description={description}
                 onCheckedChange={(e) =>
                   updateSetting(key as AdvancedOptions, !!e.checked)
                 }
+                color="fg"
+                size={{ base: 'lg', md: 'md' }}
               />
             ))}
           </Fieldset.Root>
