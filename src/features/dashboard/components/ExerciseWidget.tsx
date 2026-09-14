@@ -57,7 +57,7 @@ export const ExerciseWidget = ({ ...props }: SimpleGridProps) => {
                   {title}
                 </Heading>
                 <Text
-                  fontSize="xs"
+                  fontSize='sm'
                   textAlign="center"
                   color="fg.muted"
                   fontWeight="400"

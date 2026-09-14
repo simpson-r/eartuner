@@ -29,7 +29,7 @@ export const EXERCISE_TYPE_CONFIG: Exercises[] = [
     title: 'Intervals',
     type: ExerciseType.Interval,
     icon: Tuningicon,
-    description: 'Identify the interval between two played notes',
+    description: 'Identify the interval between two notes',
     color: EXERCISE_LABEL_CONFIG.Interval.color,
   },
   {
@@ -50,7 +50,7 @@ export const EXERCISE_TYPE_CONFIG: Exercises[] = [
     title: 'Scale degrees',
     type: ExerciseType.ScaleDegree,
     icon: Pianoicon,
-    description: 'Hear a single note and label its degree in the scale',
+    description: 'Hear a note and label its degree in the scale',
     color: EXERCISE_LABEL_CONFIG.ScaleDegree.color,
   },
 ];
